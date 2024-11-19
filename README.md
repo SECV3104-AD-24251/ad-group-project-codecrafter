@@ -17,7 +17,9 @@
     <th>A22EC0096</th>
   </tr>
   <tr>
-    
+    <th>3</th>
+    <th>Nur Aisyah Binti Baharuddin</th>
+    <th>A22EC0240</th>
   </tr>
   <tr>
     
