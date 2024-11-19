@@ -1,2 +1,3 @@
-# ad-group-project-codecrafter
-ad-group-project-codecrafter created by GitHub Classroom
+# CodeCrafter
+## **_Smart Course Registration System_**
+/.Fakhirah Shakila/
