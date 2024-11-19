@@ -12,7 +12,9 @@
     <th>A22EC0158</th>
   </tr>
   <tr>
-    
+    <th>2</th>
+    <th>Nur Faiz Haziqah Binti Rusli</th>
+    <th>A22EC0096</th>
   </tr>
   <tr>
     
