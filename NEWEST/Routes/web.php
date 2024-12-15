@@ -33,7 +33,11 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
 //To view course registered
 Route::get('/student/courses/registered', [StudentCourseRegisteredController::class, 'index'])->name('student.courses.registered');
+/* 
+Route::get('/student/chat', [ChatController::class, 'index'])->name('student.chat');
+*/
 
+//Academic staff dashboard
 Route::get('/academic-dashboard', function () {
     return view('academic.dashboard'); // Academic staff's dashboard view
 })->name('academic.dashboard');
