@@ -30,3 +30,8 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/staff/dashboard', [StaffController::class, 'index'])->name('staff.dashboard');
 });
+
+//Student dashboard
+Route::middleware(['auth'])->group(function () {
+    Route::get('/student/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
+});
