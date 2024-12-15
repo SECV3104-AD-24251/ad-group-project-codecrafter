@@ -43,7 +43,7 @@ import { Head } from '@inertiajs/vue3';
                         </button>
 
                         <button
-                            @click="navigateTo('/registered-courses')"
+                            @click="navigateTo('/consultations')"
                             class="w-1/2 py-4 bg-gradient-to-r from-pink-400 to-red-500 text-white font-semibold rounded-lg shadow-md hover:shadow-lg"
                         >
                             Need Consultation?
