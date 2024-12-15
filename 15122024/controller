@@ -166,3 +166,39 @@ class StaffController extends Controller
         return view('staff.dashboard');  
     }
 }
+
+//ConsultationController.php
+<?php
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Consultation;
+use App\Models\User;
+use Inertia\Inertia;
+
+class ConsultationController extends Controller
+{
+    public function index()
+    {
+        $advisors = User::where('role', 'advisor')->get(); // Ensure 'role' exists in your users table
+        return Inertia::render('Consultations/Index', [
+            'advisors' => $advisors,
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'advisor_id' => 'required|exists:users,id',
+        ]);
+
+        Consultation::create([
+            'advisor_id' => $request->advisor_id,
+            'student_id' => auth()->id(),
+            'scheduled_at' => now()->addDays(1), // Default scheduled time
+            'status' => 'pending',
+        ]);
+
+        return redirect()->route('consultations.index')->with('success', 'Consultation scheduled successfully!');
+    }
+}
