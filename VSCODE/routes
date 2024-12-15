@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConsultationController;
 
 Route::view("/", "welcome");
 
@@ -26,3 +27,8 @@ Route::get('/profile/edit', [AuthController::class, 'editProfile'])->name('profi
 
 
 Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/consultations', [ConsultationController::class, 'index'])->name('consultations.index');
+    Route::post('/consultations', [ConsultationController::class, 'store'])->name('consultations.store');
+});
