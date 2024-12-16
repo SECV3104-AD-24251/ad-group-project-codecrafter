@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\StudentDashboardController;
 use App\Http\Controllers\StudentCourseRegisteredController;
+use App\Http\Controllers\Student\DegreeProgressController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,3 +43,7 @@ Route::get('/academic-dashboard', function () {
     return view('academic.dashboard'); // Academic staff's dashboard view
 })->name('academic.dashboard');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/student/degree-progress', [DegreeProgressController::class, 'showProgress'])
+        ->name('student.degree.progress');
+});
