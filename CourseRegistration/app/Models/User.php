@@ -52,4 +52,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'user_subjects');
     }
 
+    public function sections()
+    {
+        return $this->hasMany(SectionInfo::class, 'user_id');
+    }
+
 }
