@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,12 +42,36 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <div class="message">
-            Registration successful! You can now view your registered courses.
-        </div>
+        <h2>Sections for Course ID: {{ $course_id }}</h2>
+
+        <table>
+            <tr>
+                <th>Section No.</th>
+                <th>Lecturer Name</th>
+                <th>Available Seats</th>
+                <th>Action</th>
+            </tr>
+
+            @foreach ($sections as $section)
+                <tr>
+                    <td>{{ $section->section }}</td>
+                    <td>{{ $section->lect_assigned }}</td>
+                    <td>{{ $section->capacity }}</td>
+                    <td>
+                        <form method="POST"
+                            action="{{ route('processRegistration.enroll', ['section_id' => $section->id]) }}">
+                            @csrf
+                            <button type="submit">Enroll Me</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </table>
         <a href="{{ route('student.courses.registered') }}">Go to Registered Courses</a>
     </div>
 </body>
+
 </html>

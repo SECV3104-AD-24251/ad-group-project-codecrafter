@@ -16,4 +16,9 @@ class Course extends Model
         'no_section',
         'semester',
     ];
+
+    public function sections()
+    {
+        return $this->hasMany(SectionInfo::class, 'course_id');
+    }
 }

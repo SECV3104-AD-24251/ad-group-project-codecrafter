@@ -1,38 +1,59 @@
 <?php
-
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CourseController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\StudentDashboardController;
+use App\Http\Controllers\StudentCourseRegisteredController;
+use App\Http\Controllers\CourseRegistrationController;
+use App\Http\Controllers\ProcessRegistrationController;
 
-// Welcome Page
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return view('welcome');
 });
 
-// Dashboard Page
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Redirect route based on role selection
+Route::get('/login/redirect', function (Illuminate\Http\Request $request) {
+    $role = $request->input('role'); // Get the role selected by the user
 
-// Grouping Authenticated Routes
-Route::middleware('auth')->group(function () {
-    // Profile Routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    if ($role == 'student') {
+        return redirect()->route('login'); // Redirect to the student login page
+    } elseif ($role == 'academic_staff') {
+        return redirect()->route('login'); // Redirect to the same login page (if unified)
+    } else {
+        return redirect('/'); // If no role selected, redirect to the welcome page
+    }
+})->name('login.redirect');
 
-    // Course Routes
-    Route::get('/registration', [CourseController::class, 'showRegistrationForm'])->name('course.registration'); // Registration Page
-    Route::post('/registration', [CourseController::class, 'registerCourse'])->name('course.register'); // Submit Registration
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
 
-    Route::get('/registered-courses', [CourseController::class, 'showRegisteredCourses'])->name('course.registered'); // View Registered Courses
-});
+// Unified login route for both students and academic staff
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
 
-require __DIR__ . '/auth.php';
+//Student dashboard
+Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
+//To view course registered
+Route::get('/student/courses/registered', [StudentCourseRegisteredController::class, 'index'])->name('student.courses.registered');
+
+Route::get('/academic-dashboard', function () {
+    return view('academic.dashboard'); // Academic staff's dashboard view
+})->name('academic.dashboard');
+
+// Course Registration Routes
+Route::get('/student/courses/register', [CourseRegistrationController::class, 'showSubjectList'])
+    ->name('student.courses.register');
+
+// Route to show sections
+Route::get('/course/{course_id}/sections', [ProcessRegistrationController::class, 'showSections'])
+    ->name('processRegistration.show');
+
+// Route to process enrollment
+Route::post('/course/section/enroll', [ProcessRegistrationController::class, 'enroll'])
+    ->name('processRegistration.enroll');
+
+// Route after enrollment
+Route::post('/course/success', [ProcessRegistrationController::class, 'enroll'])
+    ->name('student.courses.registered');
+
+

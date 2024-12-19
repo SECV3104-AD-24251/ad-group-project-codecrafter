@@ -37,7 +37,7 @@ class CourseRegistrationController extends Controller
         $user->registeredSubjects()->attach($subject_id);
 
         // Redirect to the registered courses page
-        return redirect()->route('student.courses.registered')
+        return redirect()->route('processRegistration.show')
             ->with('success', "Successfully registered for {$subject->name}.");
     }
 }

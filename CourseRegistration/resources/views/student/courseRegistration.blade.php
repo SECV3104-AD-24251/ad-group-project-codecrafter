@@ -54,9 +54,9 @@
         <h1 class="header">Course Registration</h1>
         <div class="course-list">
             @foreach ($subjects as $subject)
-                <a href="{{ route('student.courses.process', $subject->id) }}" class="course-item">
-                    <span>{{ $subject->code }} - {{ $subject->name }}</span>
-                    <span>Credit: {{ $subject->credit }}</span>
+                <a href="{{ route('processRegistration.show', $subject->id) }}" class="course-item">
+                    <span>{{ $subject->subject_code }} - {{ $subject->subject_name }}</span>
+                    <span>Credit: {{ $subject->credit_hours }}</span>
                 </a>
             @endforeach
         </div>
