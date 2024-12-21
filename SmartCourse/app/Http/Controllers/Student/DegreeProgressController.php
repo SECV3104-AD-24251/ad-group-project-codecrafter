@@ -17,20 +17,26 @@ class DegreeProgressController extends Controller
         $completedCourses = $student->completedCourses()->get();
         $degreePlan = $student->degreePlan;
 
+        if (!$degreePlan) {
+            return redirect()->back()->with('error', 'No degree plan associated with this student.');
+        }
+
         $totalCourses = $degreePlan->totalCourses();
         $completedCount = $completedCourses->count();
 
-        // Calculate percentage completion
-        $completionRate = ($completedCount / $totalCourses) * 100;
+        // Calculate percentage completion safely to avoid division by zero
+        $completionRate = $totalCourses > 0 ? ($completedCount / $totalCourses) * 100 : 0;
 
         // Fetch suggestions for electives
         $suggestedElectives = $this->getSuggestedElectives($student);
 
+        // Return the 'student.degree_progress' view with the required data
         return view('student.degree_progress', compact(
             'completedCourses',
             'totalCourses',
             'completionRate',
-            'suggestedElectives'
+            'suggestedElectives',
+            'degreePlan'
         ));
     }
 
