@@ -99,11 +99,15 @@
     <!-- Remaining Mandatory Courses -->
     <div class="section">
         <h2>Remaining Mandatory Courses</h2>
-        <ul>
-            @foreach ($degreePlan->getPendingMandatoryCourses($completedCourses) as $course)
-                <li>{{ $course->name }}</li>
-            @endforeach
-        </ul>
+        @if ($degreePlan)
+            <ul>
+                @foreach ($degreePlan->getPendingMandatoryCourses($completedCourses) as $course)
+                    <li>{{ $course->name }}</li>
+                @endforeach
+            </ul>
+        @else
+            <p>No degree plan found.</p>
+        @endif
     </div>
 
     <!-- Suggested Electives -->
