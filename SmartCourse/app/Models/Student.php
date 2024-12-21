@@ -15,8 +15,13 @@ class Student extends Model
     }
 
     // Relationship to get the associated degree plan
-    public function degreePlan(): HasOne
+    /*public function degreePlan(): HasOne
     {
         return $this->hasOne(DegreePlan::class);
+    }*/
+
+    public function degreePlan()
+    {
+        return $this->belongsTo(DegreePlan::class);
     }
 }
