@@ -15,6 +15,6 @@ class DegreePlan extends Model
     // Function to get pending mandatory courses based on completed courses
     public function getPendingMandatoryCourses($completedCourses)
     {
-        return $this->mandatoryCourses()->whereNotIn('id', $completedCourses->pluck('id'));
+        return $this->mandatoryCourses()->whereNotIn('id', $completedCourses->pluck('id'))->get();
     }
 }
