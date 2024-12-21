@@ -61,11 +61,15 @@
                     <td>{{ $section->lect_assigned }}</td>
                     <td>{{ $section->capacity }}</td>
                     <td>
-                        <form method="POST"
-                            action="{{ route('processRegistration.enroll', ['section_id' => $section->id]) }}">
+                        <form method="POST" action="{{ route('processRegistration.enroll') }}">
                             @csrf
-                            <button type="submit">Enroll Me</button>
+                            <input type="hidden" name="section_id" value="{{ $section->id }}">
+                            <input type="hidden" name="course_id" value="{{ $course_id }}">
+                            <button type="submit">
+                                @if ($section->user_id === Auth::id()) Unenroll Me @else Enroll Me @endif
+                            </button>
                         </form>
+
                     </td>
                 </tr>
             @endforeach
@@ -73,5 +77,7 @@
         <a href="{{ route('student.courses.registered') }}">Go to Registered Courses</a>
     </div>
 </body>
+<td>{{ $section->id }}</td>
+
 
 </html>

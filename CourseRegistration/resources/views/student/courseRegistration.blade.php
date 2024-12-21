@@ -52,6 +52,15 @@
 <body>
     <div class="container">
         <h1 class="header">Course Registration</h1>
+        <div class="dropdown">
+            <button class="dropdown-button">Profile</button>
+            <div class="dropdown-menu">
+                <a href="#">View Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+        <p>These are the course you need to register...</p>
         <div class="course-list">
             @foreach ($subjects as $subject)
                 <a href="{{ route('processRegistration.show', $subject->id) }}" class="course-item">
