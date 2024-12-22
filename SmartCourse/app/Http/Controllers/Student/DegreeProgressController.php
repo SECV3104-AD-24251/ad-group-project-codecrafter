@@ -14,11 +14,14 @@ class DegreeProgressController extends Controller
     public function showProgress()
     {
         $student = Auth::user();
+        if (!$student) {
+            dd('User not authenticated!');
+        }
+
         $completedCourses = $student->completedCourses()->get();
         $degreePlan = $student->degreePlan;
-
         if (!$degreePlan) {
-            return redirect()->back()->with('error', 'No degree plan associated with this student.');
+            dd('Degree Plan not found!');
         }
 
         $totalCourses = $degreePlan->totalCourses();
