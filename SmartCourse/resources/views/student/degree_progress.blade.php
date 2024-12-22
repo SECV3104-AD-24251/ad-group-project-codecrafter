@@ -91,33 +91,43 @@
     <!-- Progress Bar -->
     <div class="progress-container">
         <h2>Course Progress</h2>
-        <div class="progress-bar">
-            <span style="width: {{ $completionRate }}%;">{{ $completedCourses->count() }} / {{ $totalCourses }} Courses Completed</span>
-        </div>
+        @if ($totalCourses > 0)
+            <div class="progress-bar">
+                <span style="width: {{ $completionRate }}%;">
+                    {{ $completedCourses->count() }} / {{ $totalCourses }} Courses Completed
+                </span>
+            </div>
+        @else
+            <p>No courses found in your degree plan.</p>
+        @endif
     </div>
 
     <!-- Remaining Mandatory Courses -->
     <div class="section">
         <h2>Remaining Mandatory Courses</h2>
-        @if ($degreePlan)
+        @if ($degreePlan && $degreePlan->getPendingMandatoryCourses($completedCourses)->count() > 0)
             <ul>
                 @foreach ($degreePlan->getPendingMandatoryCourses($completedCourses) as $course)
                     <li>{{ $course->name }}</li>
                 @endforeach
             </ul>
         @else
-            <p>No degree plan found.</p>
+            <p>All mandatory courses have been completed or no degree plan is available.</p>
         @endif
     </div>
 
     <!-- Suggested Electives -->
     <div class="section">
         <h2>Suggested Electives</h2>
-        <ul class="elective-list">
-            @foreach ($suggestedElectives as $elective)
-                <li>{{ $elective->name }}</li>
-            @endforeach
-        </ul>
+        @if ($suggestedElectives->count() > 0)
+            <ul class="elective-list">
+                @foreach ($suggestedElectives as $elective)
+                    <li>{{ $elective->name }}</li>
+                @endforeach
+            </ul>
+        @else
+            <p>No elective suggestions available at this time.</p>
+        @endif
     </div>
 
     <button onclick="window.history.back();">Back to Dashboard</button>
@@ -125,3 +135,4 @@
 
 </body>
 </html>
+
