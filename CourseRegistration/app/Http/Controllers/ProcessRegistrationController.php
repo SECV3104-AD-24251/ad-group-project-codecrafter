@@ -71,6 +71,6 @@ class ProcessRegistrationController extends Controller
         return redirect()->route('processRegistration.show', ['course_id' => $validated['course_id']])
             ->with('success', 'You have successfully enrolled in the section.');
 
-            
+
     }
 }

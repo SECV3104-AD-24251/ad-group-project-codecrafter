@@ -7,67 +7,73 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #f4f7fc;
         }
 
         .container {
-            width: 90%;
             max-width: 800px;
             margin: 30px auto;
         }
 
-        .header {
-            text-align: center;
+        .dropdown {
             margin-bottom: 20px;
-            color: #007BFF;
         }
 
-        .course-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .dropdown select {
+            padding: 8px;
+            font-size: 14px;
         }
 
-        .course-item {
-            background-color: #e1e5ec;
-            padding: 15px 20px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .course-list a {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background: #e1e5ec;
             text-decoration: none;
             color: #333;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+            border-radius: 5px;
         }
 
-        .course-item:hover {
-            background-color: #007BFF;
-            color: #fff;
+        .course-list a:hover {
+            background: #007BFF;
+            color: white;
         }
     </style>
+    <script>
+        function filterSemester() {
+            var selectedSemester = document.getElementById('semesterSelect').value;
+            window.location.href = '{{ route("student.courses.register") }}?semester=' + selectedSemester;
+        }
+    </script>
 </head>
 <body>
     <div class="container">
-        <h1 class="header">Course Registration</h1>
+        <h1>Course Registration</h1>
+
+        <!-- Semester Dropdown -->
         <div class="dropdown">
-            <button class="dropdown-button">Profile</button>
-            <div class="dropdown-menu">
-                <a href="#">View Profile</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
-            </div>
+            <label for="semesterSelect">Select Semester:</label>
+            <select id="semesterSelect" onchange="filterSemester()">
+                <option value="">All Semesters</option>
+                @foreach ($semesters as $semester)
+                    <option value="{{ $semester }}" @if($selectedSemester == $semester) selected @endif>
+                        {{ $semester }}
+                    </option>
+                @endforeach
+            </select>
         </div>
-        <p>These are the course you need to register...</p>
+
+        <!-- Course List -->
         <div class="course-list">
-            @foreach ($subjects as $subject)
-                <a href="{{ route('processRegistration.show', $subject->id) }}" class="course-item">
-                    <span>{{ $subject->subject_code }} - {{ $subject->subject_name }}</span>
-                    <span>Credit: {{ $subject->credit_hours }}</span>
-                </a>
-            @endforeach
+            @if ($subjects->isEmpty())
+                <p>No courses available for the selected semester.</p>
+            @else
+                @foreach ($subjects as $subject)
+                    <a href="{{ route('processRegistration.show', $subject->id) }}">
+                        {{ $subject->subject_code }} - {{ $subject->subject_name }} (Credit: {{ $subject->credit_hours }})
+                    </a>
+                @endforeach
+            @endif
         </div>
     </div>
 </body>

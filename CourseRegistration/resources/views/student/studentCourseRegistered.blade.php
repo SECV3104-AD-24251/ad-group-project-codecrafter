@@ -82,7 +82,7 @@
             <table>
                 <thead>
                     <tr>
-        
+                        <th>Course Code</th>
                         <th>Course Name</th>
                         <th>Section</th>
                         <th>Lecturer</th>
@@ -93,8 +93,8 @@
                 <tbody>
                     @foreach ($registeredSections as $section)
                         <tr>
-                    
-                            <td>{{ $section->courses->subject_name }}</td>
+                            <td>{{ $section->course->subject_code }}</td>
+                            <td>{{ $section->course->subject_name }}</td>
                             <td>{{ $section->section }}</td>
                             <td>{{ $section->lect_assigned }}</td>
                             <td>{{ $section->capacity }}</td>

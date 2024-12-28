@@ -8,6 +8,7 @@ use App\Http\Controllers\StudentCourseRegisteredController;
 use App\Http\Controllers\CourseRegistrationController;
 use App\Http\Controllers\ProcessRegistrationController;
 
+// Default route
 Route::get('/', function () {
     return view('welcome');
 });
@@ -25,20 +26,21 @@ Route::get('/login/redirect', function (Illuminate\Http\Request $request) {
     }
 })->name('login.redirect');
 
+// Authentication Routes
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
-// Student dashboard
+// Student Dashboard
 Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
 
 // To view registered courses
 Route::get('/student/courses/registered', [StudentCourseRegisteredController::class, 'index'])
     ->name('student.courses.registered');
 
-// Course Registration Routes
+// Show subject list and handle semester filter
 Route::get('/student/courses/register', [CourseRegistrationController::class, 'showSubjectList'])
     ->name('student.courses.register');
 
@@ -49,7 +51,3 @@ Route::get('/course/{course_id}/sections', [ProcessRegistrationController::class
 // Route to enroll or unenroll from a section
 Route::post('/course/section/enroll', [ProcessRegistrationController::class, 'enroll'])
     ->name('processRegistration.enroll');
-
-Route::get('/student/courses/registered', [StudentCourseRegisteredController::class, 'index'])
-    ->name('student.courses.registered');
-

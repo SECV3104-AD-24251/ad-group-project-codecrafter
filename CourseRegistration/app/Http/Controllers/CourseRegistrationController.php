@@ -3,21 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class CourseRegistrationController extends Controller
 {
     /**
-     * Show the list of subjects available for registration.
+     * Show the list of subjects available for registration with semester filtering.
+     *
+     * @param Request $request
      */
-    public function showSubjectList()
+    public function showSubjectList(Request $request)
     {
-        // Fetch subjects from the database
-        $subjects = Course::all();
+        // Fetch unique semesters for the dropdown
+        $semesters = Course::select('semester')->distinct()->pluck('semester');
 
-        // Pass subjects to the view
-        return view('student.courseRegistration', compact('subjects'));
+        // Filter subjects based on selected semester (if any)
+        $selectedSemester = $request->query('semester');
+
+        if ($selectedSemester) {
+            $subjects = Course::where('semester', $selectedSemester)->get();
+        } else {
+            $subjects = Course::all();
+        }
+
+        // Pass data to the view
+        return view('student.courseRegistration', compact('subjects', 'semesters', 'selectedSemester'));
     }
 
     /**
@@ -39,5 +49,16 @@ class CourseRegistrationController extends Controller
         // Redirect to the registered courses page
         return redirect()->route('processRegistration.show')
             ->with('success', "Successfully registered for {$subject->name}.");
+    }
+
+    /**
+     * Fetch Courses by Semester (API endpoint).
+     *
+     * @param string $semester
+     */
+    public function getCoursesBySemester($semester)
+    {
+        $courses = Course::where('semester', $semester)->get();
+        return response()->json($courses);
     }
 }
