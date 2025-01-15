@@ -13,33 +13,51 @@ class DegreeProgressController extends Controller
     // Show Degree Progress Page
     public function showProgress()
     {
-        $student = Auth::user();
-        if (!$student) {
-            dd('User not authenticated!');
+        // Fetch the authenticated user
+        $user = Auth::user();
+        
+        // Check if the user is authenticated and is a student
+        if (!$user || !$user->isStudent()) {
+            return redirect()->route('login')->withErrors('You must be logged in as a student to access this page.');
         }
 
-        $completedCourses = $student->completedCourses()->get();
+        // Ensure the user has a linked student profile
+        $student = $user->student;
+        if (!$student) {
+            return view('student.degree_progress')->withErrors('Student profile not found.');
+        }
+
+        // Fetch the student's degree plan
         $degreePlan = $student->degreePlan;
         if (!$degreePlan) {
-            dd('Degree Plan not found!');
+            return view('student.degree_progress')->withErrors('Degree plan not found.');
         }
 
+        // Get completed courses and calculate the progress
+        $completedCourses = $student->completedCourses()->get();
         $totalCourses = $degreePlan->totalCourses();
         $completedCount = $completedCourses->count();
+        $completionRate = $totalCourses > 0 ? ($completedCount / $totalCourses) * 100 : 0;
 
-        // Calculate percentage completion
-        $completionRate = ($totalCourses > 0) ? ($completedCount / $totalCourses) * 100 : 0;
-
-        // Fetch suggestions for electives
+        // Fetch suggestions for electives based on degree requirements
         $suggestedElectives = $this->getSuggestedElectives($student);
 
-        // Return the degree progress view
-        return view('student.degree_progress', compact(
-            'completedCourses',
-            'totalCourses',
-            'completionRate',
-            'suggestedElectives',
-            'degreePlan'
-        ));
+        // Pass data to the view
+        return view('student.degree_progress', [
+            'completedCourses' => $completedCourses,
+            'totalCourses' => $totalCourses,
+            'completionRate' => $completionRate,
+            'suggestedElectives' => $suggestedElectives,
+            'degreePlan' => $degreePlan
+        ]);
     }
 
+    // Function to get suggested electives
+    private function getSuggestedElectives($student)
+    {
+        $completedCourseIds = $student->completedCourses()->pluck('id')->toArray();
+        return Course::where('type', 'elective')
+                     ->whereNotIn('id', $completedCourseIds)
+                     ->get();
+    }
+}

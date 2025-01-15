@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Student extends Model
 {
+    // Fillable properties
+    protected $fillable = ['name', 'email', 'password'];
+
     // Relationship to get the completed courses
     public function completedCourses(): BelongsToMany
     {
@@ -15,13 +18,9 @@ class Student extends Model
     }
 
     // Relationship to get the associated degree plan
-    /*public function degreePlan(): HasOne
+    public function degreePlan(): HasOne
     {
-        return $this->hasOne(DegreePlan::class);
-    }*/
-
-    public function degreePlan()
-    {
-        return $this->belongsTo(DegreePlan::class);
+        return $this->hasOne(DegreePlan::class, 'student_id', 'id');
     }
 }
+

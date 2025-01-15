@@ -81,6 +81,11 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        .error-message {
+            color: red;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -88,10 +93,16 @@
 <div class="container">
     <h1>Degree Progress</h1>
 
+    <!-- Handle error messages -->
+    @if(session('errors'))
+        <div class="error-message">
+            <strong>Error:</strong> {{ session('errors')->first() }}
+        </div>
+    @endif
+
     <!-- Progress Bar -->
     <div class="progress-container">
-        <h2>Course Progress</h2>
-        @if ($totalCourses > 0)
+        @if (isset($totalCourses) && $totalCourses > 0)
             <div class="progress-bar">
                 <span style="width: {{ $completionRate }}%;">
                     {{ $completedCourses->count() }} / {{ $totalCourses }} Courses Completed
@@ -105,7 +116,7 @@
     <!-- Remaining Mandatory Courses -->
     <div class="section">
         <h2>Remaining Mandatory Courses</h2>
-        @if ($degreePlan && $degreePlan->getPendingMandatoryCourses($completedCourses)->count() > 0)
+        @if (isset($degreePlan) && $degreePlan->getPendingMandatoryCourses($completedCourses)->count() > 0)
             <ul>
                 @foreach ($degreePlan->getPendingMandatoryCourses($completedCourses) as $course)
                     <li>{{ $course->name }}</li>
@@ -119,7 +130,7 @@
     <!-- Suggested Electives -->
     <div class="section">
         <h2>Suggested Electives</h2>
-        @if ($suggestedElectives->count() > 0)
+        @if (isset($suggestedElectives) && $suggestedElectives->count() > 0)
             <ul class="elective-list">
                 @foreach ($suggestedElectives as $elective)
                     <li>{{ $elective->name }}</li>
@@ -135,4 +146,3 @@
 
 </body>
 </html>
-

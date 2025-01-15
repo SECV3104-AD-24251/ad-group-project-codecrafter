@@ -197,10 +197,12 @@
     </div>
 
     <div class="progress-container">
-        <h2>Course Progress</h2>
+        <h2>Degree Progress</h2>
         <div class="progress-bar">
-            <a href="{{ route('student.degree.progress') }}">
-                <span style="width: {{ (17 / 127) * 100 }}%;">{{ 17 }} / 127 Credits</span>
+            <a href="{{ route('student.degree.progress') }}" style="text-decoration: none;">
+                <span style="display: inline-block; background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px; width: {{ (17 / 127) * 100 }}%;">
+                    {{ 17 }} / 127 Credits
+                </span>
             </a>
         </div>
     </div>
