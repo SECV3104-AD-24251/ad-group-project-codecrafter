@@ -128,7 +128,7 @@
             @forelse ($waitlists as $waitlist)
                 <tr>
                     <td>{{ $waitlist->courseSection->course->course_name }}</td>
-                    <td>{{ $waitlist->courseSection->section }}</td>
+                    <td>{{ $waitlist->course->section }}</td>
                     <td>{{ $waitlist->position }}</td>
                     <td>
                         <span class="badge badge-{{ $waitlist->status == 'active' ? 'primary' : 'success' }}">

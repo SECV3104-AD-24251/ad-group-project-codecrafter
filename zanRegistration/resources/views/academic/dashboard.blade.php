@@ -277,7 +277,7 @@
                             <input type="hidden" name="request_id" value="{{ $request->id }}">
                             <button name="status" value="approved" class="btn btn-success">Approve</button>
                             <button name="status" value="rejected" class="btn btn-danger">Reject</button>
-                        </form>
+                        </form>                                                
                     </td>
                 </tr>
                 @endforeach

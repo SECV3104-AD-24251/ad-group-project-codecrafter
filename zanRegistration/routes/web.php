@@ -94,7 +94,9 @@ Route::delete('/waitlist/leave/{id}', [WaitlistController::class, 'leave'])->nam
 //Staff side
 Route::get('/academic/waitlist', [WaitlistController::class, 'viewRequests'])->name('academic.waitlist');
 //Accept or rejct
-Route::post('/academic/waitlist/action', [WaitlistController::class, 'updateRequest'])->name('academic.waitlist.action');
+Route::post('/waitlist/action', [WaitlistController::class, 'handleWaitlistAction'])->name('academic.waitlist.action');
 
 //Notification
-Route::post('/notifications/mark-as-read/{id}', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+Route::get('/notifications', [NotificationController::class, 'showNotifications'])->name('student.notifications');
+Route::get('/notifications/read/{notificationId}', [NotificationController::class, 'markAsRead'])->name('notification.read');
+
