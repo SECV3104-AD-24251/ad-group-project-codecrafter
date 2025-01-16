@@ -9,7 +9,6 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Global Styling */
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f9fafb;
@@ -24,28 +23,26 @@
             margin: 0 auto;
         }
 
-        /* Header Styling */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background-color: maroon;
             color: white;
-            padding: 20px;
+            padding: 15px 20px;
             border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .header h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
         }
 
         .header .system-name {
-            font-size: 18px;
-            font-weight: 400;
+            font-size: 16px;
             color: #e0e0e0;
         }
 
@@ -57,12 +54,11 @@
             background-color: white;
             color: maroon;
             border: none;
-            padding: 8px 15px;
+            padding: 8px 12px;
             font-size: 14px;
             font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .dropdown-menu {
@@ -71,9 +67,8 @@
             top: 100%;
             right: 0;
             background-color: white;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ddd;
             border-radius: 5px;
-            overflow: hidden;
             z-index: 1000;
         }
 
@@ -83,17 +78,15 @@
 
         .dropdown-menu a {
             color: maroon;
-            padding: 10px 20px;
+            padding: 10px 15px;
             display: block;
             text-decoration: none;
-            font-size: 14px;
         }
 
         .dropdown-menu a:hover {
             background-color: #f1f1f1;
         }
 
-        /* Navigation Styling */
         .nav {
             display: flex;
             justify-content: center;
@@ -101,77 +94,125 @@
             border: 1px solid #ddd;
             border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .nav a {
-            padding: 15px 20px;
+            padding: 12px 18px;
             text-decoration: none;
             color: maroon;
             font-weight: bold;
-            font-size: 16px;
             border-right: 1px solid #ddd;
-            display: flex;
-            align-items: center;
         }
 
         .nav a:last-child {
             border-right: none;
         }
 
-        .nav a i {
-            margin-right: 10px;
-        }
-
-        .nav a.active {
-            color: maroon;
-            border-radius: 10px 10px 0 0;
-        }
-
-        .nav a:hover {
+        .nav a:hover, .nav a.active {
             background-color: maroon;
             color: white;
         }
 
-        /* Section Styling */
         .sections-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            margin-bottom: 20px;
         }
 
         .section {
             background-color: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            flex: 1;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
             text-align: center;
         }
 
         .section h2 {
-            margin-top: 0;
-            font-size: 20px;
             color: maroon;
-        }
-
-        .section p {
-            color: #6c757d;
-            margin: 10px 0;
+            margin-top: 0;
         }
 
         .section button {
             background-color: maroon;
             color: white;
-            padding: 10px 20px;
             border: none;
+            padding: 8px 16px;
             border-radius: 5px;
-            cursor: pointer;
             font-size: 14px;
+            cursor: pointer;
         }
 
         .section button:hover {
             background-color: #9d1c4d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        table thead th {
+            background-color: maroon;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        table button {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-success {
+            background-color: green;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: red;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: darkgreen;
+        }
+
+        .btn-danger:hover {
+            background-color: darkred;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                text-align: center;
+            }
+
+            .nav a {
+                border-bottom: 1px solid #ddd;
+                border-right: none;
+            }
         }
     </style>
 </head>
@@ -194,7 +235,7 @@
         </div>
     </div>
 
-    <!-- Navigation Bar -->
+    <!-- Navigation -->
     <div class="nav">
         <a href="{{ route('academic.dashboard') }}" class="{{ request()->routeIs('academic.dashboard') ? 'active' : '' }}">
             <i class="fas fa-home"></i> Dashboard
@@ -202,7 +243,6 @@
         <a href="{{ route('academic.course.approvals') }}" class="{{ request()->routeIs('academic.course.approvals') ? 'active' : '' }}">
             <i class="fas fa-check"></i> Course Approvals
         </a>
-        
     </div>
 
     <!-- Sections -->
@@ -215,6 +255,7 @@
             </a>
         </div>
 
+        <!-- Table -->
         <table>
             <thead>
                 <tr>
@@ -242,7 +283,6 @@
                 @endforeach
             </tbody>
         </table>
-        
     </div>
 </div>
 
