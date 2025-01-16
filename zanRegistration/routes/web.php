@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AcademicController;
 use App\Http\Controllers\WaitlistController;
@@ -45,7 +46,6 @@ Route::post('/student/chat/send', [ChatController::class, 'sendMessage']);
 // Academic Staff Routes
 Route::get('/academic-dashboard', [StaffDashboardController::class, 'dashboard'])->name('academic.dashboard');
 
-
 // Course Registration
 Route::get('/student/courses/register', [CourseRegistrationController::class, 'showSubjectList'])->name('student.courses.register');
 Route::get('/course/{course_id}/sections', [ProcessRegistrationController::class, 'showSections'])->name('processRegistration.show');
@@ -68,8 +68,26 @@ Route::middleware(['auth'])->group(function () {
 Route::post('/check-conflict', [RegistrationController::class, 'checkConflict']);
 
 Route::get('/waitlist', [WaitlistController::class, 'index'])->name('student.waitlist')->middleware('auth');
-Route::post('/waitlist/join', [WaitlistController::class, 'joinWaitlist'])->name('student.waitlist.join')->middleware('auth');
-Route::delete('/waitlist/leave/{id}', [WaitlistController::class, 'leaveWaitlist'])->name('student.waitlist.leave')->middleware('auth');
+Route::post('/waitlist/join', [WaitlistController::class, 'join'])->name('student.waitlist.join')->middleware('auth');
+Route::delete('/waitlist/leave/{id}', [WaitlistController::class, 'leave'])->name('student.waitlist.leave')->middleware('auth');
 
 //Course approvals
 Route::get('/academic/course-approvals', [AcademicController::class, 'courseApprovals'])->name('academic.course.approvals');
+
+// Chat
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat', [MessageController::class, 'index']);
+    Route::get('/messages/{user}', [MessageController::class, 'show']);
+    Route::post('/messages', [MessageController::class, 'store']);
+});
+
+//Waitlist
+//Student side
+Route::get('/student/waitlist-form', [StudentController::class, 'showWaitlistForm'])->name('student.waitlist.form');
+Route::post('/waitlist/submit', [WaitlistController::class, 'submit'])->name('waitlist.submit');
+
+
+//Staff side
+Route::get('/academic/waitlist', [WaitlistController::class, 'viewRequests'])->name('academic.waitlist');
+//Accept or rejct
+Route::post('/academic/waitlist/action', [WaitlistController::class, 'updateRequest'])->name('academic.waitlist.action');
