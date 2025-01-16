@@ -160,13 +160,13 @@
                 @csrf
                 <label for="course">Select Course:</label>
                 <select name="course_id" id="course" required>
+                    <option value="" disabled selected>Select a course</option>
                     @foreach($courses as $course)
                         <option value="{{ $course->id }}">{{ $course->name }}</option>
                     @endforeach
                 </select>
                 <button type="submit">Submit Waitlist Request</button>
             </form>
-            
         </div>
     </div>
 </div>
