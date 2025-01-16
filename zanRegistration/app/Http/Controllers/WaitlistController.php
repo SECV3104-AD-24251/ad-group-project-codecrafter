@@ -1,9 +1,12 @@
 <?php
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
+use App\Models\Course;
 use App\Models\Waitlist;
 use App\Models\SectionInfo;
+use Illuminate\Http\Request;
+use App\Models\WaitlistRequest;
 use Illuminate\Support\Facades\Auth;
+
 class WaitlistController extends Controller
 {
     // Display the waitlist page
@@ -50,4 +53,54 @@ class WaitlistController extends Controller
         $waitlist->delete();
         return redirect()->back()->with('success', 'You have left the waitlist.');
     }
+
+    public function submit(Request $request)
+    {
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+        ]);
+
+        WaitlistRequest::create([
+            'student_id' => Auth::id(),
+            'course_id' => $request->course_id,
+            'status' => 'pending',
+        ]);
+
+        return back()->with('success', 'Waitlist request submitted successfully.');
+    }
+
+    public function viewRequests()
+    {
+    // Fetch all pending waitlist requests with related student and course data
+    $requests = WaitlistRequest::where('status', 'pending')
+        ->with('student', 'course')
+        ->get();
+
+    return view('academic.waitlist', compact('requests'));
+    }
+
+
+    // Academic staff approves or rejects a request
+    public function updateRequest(Request $request)
+    {
+        $request->validate([
+            'request_id' => 'required|exists:waitlist_requests,id',
+            'status' => 'required|in:approved,rejected',
+        ]);
+
+        $waitlist = WaitlistRequest::find($request->request_id);
+        $waitlist->update(['status' => $request->status]);
+
+        return back()->with('success', 'Waitlist request updated successfully.');
+    }
+
+    public function showWaitlistForm()
+    {
+    // Fetch all courses (you can filter based on specific criteria if needed)
+    $courses = Course::all();
+
+    return view('student.waitlist_form', compact('courses'));
+    }
+
+
 }

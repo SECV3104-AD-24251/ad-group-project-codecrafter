@@ -3,16 +3,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Message;
 use Illuminate\Http\Request;
+use App\Models\WaitlistRequest;
 
 class StaffDashboardController extends Controller
 {
 
-    public function dashboard()
-    {
+    public function academicDashboard()
+{
+    // Retrieve all pending waitlist requests
+    $requests = WaitlistRequest::with('student', 'course')->get();
 
-        // Return the dashboard view and pass the students
-        return view('academic.dashboard');
-    }
+    // Pass the data to the view
+    return view('academic.dashboard', compact('requests'));
+}
+
 
 
 

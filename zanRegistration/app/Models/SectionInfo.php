@@ -25,6 +25,12 @@ class SectionInfo extends Model
         return $this->belongsTo(Course::class, 'course_id');
     }
 
+    // Relationship with Waitlists
+    public function waitlists()
+    {
+        return $this->hasMany(Waitlist::class, 'course_section_id');
+    }
+
     // Explicitly specify the table name
     protected $table = 'section_info';
 }
