@@ -20,7 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role', // Make sure to include role if it's to be mass assignable
+        'role',
+        'remember_token' // Make sure to include role if it's to be mass assignable
     ];
 
     /**
@@ -62,4 +63,10 @@ class User extends Authenticatable
     {
         return $this->role === 'student';
     }
+
+    public function waitlists()
+    {
+        return $this->hasMany(Waitlist::class, 'student_id');
+    }
+
 }

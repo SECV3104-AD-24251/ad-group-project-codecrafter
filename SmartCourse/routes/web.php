@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\StudentDashboardController;
 use App\Http\Controllers\StudentCourseRegisteredController;
 use App\Http\Controllers\Student\DegreeProgressController;
+use App\Http\Controllers\WaitlistController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -46,4 +47,10 @@ Route::get('/academic-dashboard', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/student/degree-progress', [DegreeProgressController::class, 'showProgress'])
         ->name('student.degree.progress');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/student/waitlist', [WaitlistController::class, 'index'])->name('student.waitlist');
+    Route::post('/student/waitlist/join', [WaitlistController::class, 'join'])->name('student.waitlist.join');
+    Route::delete('/student/waitlist/{id}/leave', [WaitlistController::class, 'leave'])->name('student.waitlist.leave');
 });
