@@ -125,27 +125,28 @@ class WaitlistController extends Controller
     }
 
     public function handleWaitlistAction(Request $request)
-    {
-        $validated = $request->validate([
-            'request_id' => 'required|exists:waitlists,id',
-            'status' => 'required|in:approved,rejected',
-        ]);
+{
+    $validated = $request->validate([
+        'request_id' => 'required|exists:waitlists,id',
+        'status' => 'required|in:approved,rejected',
+    ]);
 
-        // Find the waitlist request
-        $waitlist = Waitlist::find($validated['request_id']);
-        $waitlist->status = $validated['status'];
-        $waitlist->save();
+    // Find the waitlist request
+    $waitlist = Waitlist::find($validated['request_id']);
+    $waitlist->status = $validated['status'];
+    $waitlist->save();
 
-        // Notify the student
-        $student = $waitlist->student; // Assuming the waitlist is related to the student
-        $notificationData = [
-            'course_name' => $waitlist->course->name,
-            'status' => $validated['status'],
-        ];
+    // Notify the student
+    $student = $waitlist->student; // Assuming the waitlist is related to the student
+    $notificationData = [
+        'course_name' => $waitlist->course->name,
+        'status' => $validated['status'],
+    ];
 
-        // Send notification and/or email
-        $student->notify(new WaitlistStatusNotification($notificationData));
+    // Send notification and/or email
+    $student->notify(new WaitlistStatusNotification($notificationData));
 
-        return redirect()->back()->with('success', 'Waitlist status updated and student notified.');
-    }
+    return redirect()->back()->with('success', 'Waitlist status updated and student notified.');
+}
+
 }
