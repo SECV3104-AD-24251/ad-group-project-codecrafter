@@ -15,6 +15,10 @@ class Course extends Model
         'credit_hours',
         'no_section',
         'semester',
+        'day',
+        'start_time',
+        'end_time',
+
     ];
 
     public function sections()

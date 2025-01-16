@@ -1,35 +1,31 @@
-<?php 
+<?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Student extends Model
 {
+    // Fillable properties
+    protected $fillable = ['name', 'email', 'password'];
 
-    use Notifiable;
-    protected $table = 'students';
-    
-    // Define the many-to-many relationship with courses
-    public function courses()
-{
-    return $this->belongsToMany(Course::class, 'course_user', 'student_id', 'course_id');
-}
-
-public function completedCourses(): BelongsToMany
+    // Relationship to get the completed courses
+    public function completedCourses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'completed_courses');
     }
 
-    public function degreePlan()
+    // Relationship to get the associated degree plan
+    public function degreePlan(): HasOne
     {
-        return $this->belongsTo(DegreePlan::class);
+        return $this->hasOne(DegreePlan::class, 'student_id', 'id');
     }
 
     public function registeredCourses()
-    {
-        return $this->belongsToMany(Course::class, 'course_user');
-    }
+{
+    return $this->belongsToMany(Course::class, 'course_student', 'student_id', 'course_id');
+}
 
 }
