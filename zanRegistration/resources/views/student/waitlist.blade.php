@@ -101,6 +101,10 @@
 </head>
 <body>
 <div class="container">
+    <div class="container">
+        <div style="text-align: left; margin-bottom: 20px;">
+            <a href="{{ route('student.dashboard') }}" class="btn-primary" style="text-decoration: none; padding: 10px 20px; background-color: maroon; border-radius: 5px; color: white;">Back to Dashboard</a>
+        </div>
     <h1>Waitlist Management</h1>
     <!-- Display success and error messages -->
     @if(session('success'))
@@ -152,22 +156,17 @@
             <h2>Join a Waitlist</h2>
         </div>
         <div class="card-body">
-            <form action="{{ route('student.waitlist.join') }}" method="POST">
+            <form action="{{ route('waitlist.submit') }}" method="POST">
                 @csrf
-                <div class="form-group">
-                    <label for="course_section_id">Select Course Section:</label>
-                    <select name="course_section_id" id="course_section_id" class="form-control">
-                        @forelse ($availableSections as $section)
-                            <option value="{{ $section->id }}">
-                                {{ $section->course->course_name }} (Section {{ $section->section }})
-                            </option>
-                        @empty
-                            <option disabled>No available sections</option>
-                        @endforelse
-                    </select>
-                </div>
-                <button class="btn-primary">Join Waitlist</button>
+                <label for="course">Select Course:</label>
+                <select name="course_id" id="course" required>
+                    @foreach($courses as $course)
+                        <option value="{{ $course->id }}">{{ $course->name }}</option>
+                    @endforeach
+                </select>
+                <button type="submit">Submit Waitlist Request</button>
             </form>
+            
         </div>
     </div>
 </div>

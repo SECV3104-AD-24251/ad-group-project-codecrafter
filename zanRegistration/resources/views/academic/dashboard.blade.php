@@ -214,16 +214,35 @@
                 <button>Manage Approvals</button>
             </a>
         </div>
-        <div class="section">
-            <h2>Advisory Overview</h2>
-            <p>View and manage advisory consultations with students.</p>
-                <button>Go to Advisory</button>
-        </div>
-        <div class="section">
-            <h2>Analytics</h2>
-            <p>Access detailed insights and analytics on course registrations.</p>
-                <button>View Analytics</button>
-        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Course</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($requests as $request)
+                <tr>
+                    <td>{{ $request->student->name }}</td>
+                    <td>{{ $request->course->name }}</td>
+                    <td>{{ ucfirst($request->status) }}</td>
+                    <td>
+                        <form action="{{ route('academic.waitlist.action') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="request_id" value="{{ $request->id }}">
+                            <button name="status" value="approved" class="btn btn-success">Approve</button>
+                            <button name="status" value="rejected" class="btn btn-danger">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        
     </div>
 </div>
 
