@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\AcademicController;
+use App\Http\Controllers\WaitlistController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\StaffDashboardController;
 use App\Http\Controllers\StudentDashboardController;
@@ -35,17 +37,14 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
 // Student Routes
-Route::get('/student/dashboard', [StudentDashboardController::class, 'dashboard'])->name('student.dashboard');
+Route::get('/student/dashboard', [StudentDashboardController::class, 'dashboard'])->name('student.dashboard')->middleware('auth');;
 Route::get('/student/courses/registered', [StudentCourseRegisteredController::class, 'index'])->name('student.courses.registered');
 Route::get('/student/chat', [ChatController::class, 'index'])->name('student.chat');
 Route::post('/student/chat/send', [ChatController::class, 'sendMessage']);
 
 // Academic Staff Routes
 Route::get('/academic-dashboard', [StaffDashboardController::class, 'dashboard'])->name('academic.dashboard');
-Route::prefix('academic/chat')->group(function () {
-    Route::get('/academic/dashboard/{student_id}', [ChatController::class, 'showAcademicMessages'])->name('academic.dashboard');
-    Route::post('/academic/chat/reply', [ChatController::class, 'replyToStudent']);
-});
+
 
 // Course Registration
 Route::get('/student/courses/register', [CourseRegistrationController::class, 'showSubjectList'])->name('student.courses.register');
@@ -59,3 +58,18 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/student/credit-hours', [StudentController::class, 'showCreditHours'])->name('student.credit.hours');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/student/degree-progress', [DegreeProgressController::class, 'showProgress'])
+        ->name('student.degree.progress');
+    });
+
+//Timetable conflict
+Route::post('/check-conflict', [RegistrationController::class, 'checkConflict']);
+
+Route::get('/waitlist', [WaitlistController::class, 'index'])->name('student.waitlist')->middleware('auth');
+Route::post('/waitlist/join', [WaitlistController::class, 'joinWaitlist'])->name('student.waitlist.join')->middleware('auth');
+Route::delete('/waitlist/leave/{id}', [WaitlistController::class, 'leaveWaitlist'])->name('student.waitlist.leave')->middleware('auth');
+
+//Course approvals
+Route::get('/academic/course-approvals', [AcademicController::class, 'courseApprovals'])->name('academic.course.approvals');
