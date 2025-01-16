@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2025 at 01:16 PM
+-- Generation Time: Jan 16, 2025 at 10:44 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `registrationsystem`
+-- Database: `smart_course`
 --
 
 -- --------------------------------------------------------
@@ -32,10 +32,19 @@ CREATE TABLE `waitlists` (
   `student_id` bigint(20) UNSIGNED NOT NULL,
   `course_section_id` bigint(20) UNSIGNED NOT NULL,
   `position` int(11) NOT NULL,
-  `status` enum('active','notified') DEFAULT 'active',
+  `status` enum('active','notified') NOT NULL DEFAULT 'active',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `waitlists`
+--
+
+INSERT INTO `waitlists` (`id`, `student_id`, `course_section_id`, `position`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 'active', '2025-01-16 21:41:34', '2025-01-16 21:41:34'),
+(6, 1, 4, 2, 'active', '2025-01-16 21:44:04', '2025-01-16 21:44:04'),
+(7, 1, 2, 3, 'notified', '2025-01-16 21:44:04', '2025-01-16 21:44:04');
 
 --
 -- Indexes for dumped tables
@@ -45,9 +54,7 @@ CREATE TABLE `waitlists` (
 -- Indexes for table `waitlists`
 --
 ALTER TABLE `waitlists`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `student_id` (`student_id`),
-  ADD KEY `course_section_id` (`course_section_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -57,18 +64,7 @@ ALTER TABLE `waitlists`
 -- AUTO_INCREMENT for table `waitlists`
 --
 ALTER TABLE `waitlists`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `waitlists`
---
-ALTER TABLE `waitlists`
-  ADD CONSTRAINT `waitlists_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `waitlists_ibfk_2` FOREIGN KEY (`course_section_id`) REFERENCES `section_info` (`id`) ON DELETE CASCADE;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
