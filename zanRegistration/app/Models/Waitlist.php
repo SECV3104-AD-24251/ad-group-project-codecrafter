@@ -11,13 +11,16 @@ class Waitlist extends Model
         'position',
         'status',
     ];
+    
     // Relationships
-    public function courseSection()
-    {
-        return $this->belongsTo(SectionInfo::class, 'course_section_id');
-    }
-    public function student()
-    {
-        return $this->belongsTo(User::class, 'student_id');
-    }
+    public function course()
+{
+    return $this->belongsTo(Course::class);
+}
+
+public function student()
+{
+    return $this->belongsTo(User::class, 'student_id');
+}
+
 }
