@@ -22,7 +22,7 @@ class SectionInfo extends Model
     // Relationship with Course
     public function course()
     {
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->belongsTo(Course::class, 'course_id', 'id');
     }
 
     // Relationship with Waitlists

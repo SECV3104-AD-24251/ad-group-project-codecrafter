@@ -88,7 +88,6 @@ Route::get('/student/waitlist-form', [StudentController::class, 'showWaitlistFor
 Route::post('/waitlist/submit', [WaitlistController::class, 'submit'])->name('waitlist.submit');
 
 Route::get('/waitlist', [StudentDashboardController::class, 'waitlist'])->name('student.waitlist');
-Route::post('/waitlist/submit', [WaitlistController::class, 'submit'])->name('waitlist.submit');
 Route::delete('/waitlist/leave/{id}', [WaitlistController::class, 'leave'])->name('student.waitlist.leave');
 
 
