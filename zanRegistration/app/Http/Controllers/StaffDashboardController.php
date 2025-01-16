@@ -8,7 +8,7 @@ use App\Models\WaitlistRequest;
 class StaffDashboardController extends Controller
 {
 
-    public function academicDashboard()
+    public function dashboard()
 {
     // Retrieve all pending waitlist requests
     $requests = WaitlistRequest::with('student', 'course')->get();
