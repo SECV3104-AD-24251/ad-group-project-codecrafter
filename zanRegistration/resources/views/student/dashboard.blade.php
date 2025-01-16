@@ -277,6 +277,31 @@
         </a>
        </div>
     </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>Notifications</h4>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                @foreach (auth()->user()->notifications as $notification)
+                    <li class="list-group-item {{ $notification->unread() ? 'list-group-item-warning' : '' }}">
+                        <strong>{{ $notification->data['course_name'] }}</strong>: 
+                        {{ $notification->data['message'] }}
+                        <small class="text-muted d-block">{{ $notification->created_at->diffForHumans() }}</small>
+                        @if ($notification->unread())
+                            <form action="{{ route('notifications.markAsRead', $notification->id) }}" method="POST" class="mt-2">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-primary">Mark as Read</button>
+                            </form>
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+    
+
 </div>
 
 </body>

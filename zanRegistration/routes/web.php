@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
@@ -95,3 +96,6 @@ Route::delete('/waitlist/leave/{id}', [WaitlistController::class, 'leave'])->nam
 Route::get('/academic/waitlist', [WaitlistController::class, 'viewRequests'])->name('academic.waitlist');
 //Accept or rejct
 Route::post('/academic/waitlist/action', [WaitlistController::class, 'updateRequest'])->name('academic.waitlist.action');
+
+//Notification
+Route::post('/notifications/mark-as-read/{id}', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');

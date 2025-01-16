@@ -269,7 +269,7 @@
                 @foreach($requests as $request)
                 <tr>
                     <td>{{ $request->student->name }}</td>
-                    <td>{{ $request->course->name }}</td>
+                    <td>{{ $request->course->course_name }}</td>
                     <td>{{ ucfirst($request->status) }}</td>
                     <td>
                         <form action="{{ route('academic.waitlist.action') }}" method="POST">

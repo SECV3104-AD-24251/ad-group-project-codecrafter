@@ -127,7 +127,7 @@
         <tbody>
             @forelse ($waitlists as $waitlist)
                 <tr>
-                    <td>{{ $waitlist->courseSection->course->subject_name }}</td>
+                    <td>{{ $waitlist->courseSection->course->course_name }}</td>
                     <td>{{ $waitlist->courseSection->section }}</td>
                     <td>{{ $waitlist->position }}</td>
                     <td>
@@ -162,7 +162,7 @@
                 <select name="course_id" id="course" required>
                     <option value="" disabled selected>Select a course</option>
                     @foreach($courses as $course)
-                        <option value="{{ $course->id }}">{{ $course->name }}</option>
+                        <option value="{{ $course->id }}">{{ $course->course_name}} ({{$course->section}})</option>
                     @endforeach
                 </select>
                 <button type="submit">Submit Waitlist Request</button>
