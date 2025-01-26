@@ -1,21 +1,13 @@
-<h3>Your Notifications</h3>
+<!-- resources/views/student/notifications.blade.php -->
 
-{{-- Display unread notifications --}}
-<h4>Unread Notifications</h4>
-<ul>
-    @foreach (auth()->user()->unreadNotifications as $notification)
-        <li>
-            {{ $notification->data['message'] }} - {{ $notification->created_at->diffForHumans() }}
-        </li>
-    @endforeach
-</ul>
+<h2>Your Notifications</h2>
 
-{{-- Display all notifications --}}
-<h4>All Notifications</h4>
-<ul>
-    @foreach (auth()->user()->notifications as $notification)
-        <li>
-            {{ $notification->data['message'] }} - {{ $notification->created_at->diffForHumans() }}
-        </li>
-    @endforeach
-</ul>
+@foreach($notifications as $notification)
+    <div class="notification">
+        <p>{{ $notification->data['message'] }}</p>
+        <small>{{ $notification->created_at->diffForHumans() }}</small>
+
+        <!-- Link to mark notification as read -->
+        <a href="{{ route('notification.read', $notification->id) }}">Mark as read</a>
+    </div>
+@endforeach

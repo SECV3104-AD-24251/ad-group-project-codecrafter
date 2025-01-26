@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>Waitlist Management</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
@@ -41,6 +41,7 @@
             margin: 0;
             font-size: 24px;
             font-weight: 700;
+            color:white;
         }
 
         .header .system-name {
@@ -130,92 +131,94 @@
             margin-right: 10px;
         }
 
-        /* Progress Bar Styling */
-        .progress-container {
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: maroon;
+        }
+        .alert {
+            padding: 10px 20px;
+            border-radius: 5px;
             margin-bottom: 20px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: maroon;
+            color: white;
+        }
+        .badge {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            color: white;
+        }
+        .badge-primary {
+            background-color: maroon;
+        }
+        .badge-success {
+            background-color: #28a745;
+        }
+        button {
+            background-color: maroon;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+        .card {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
         }
-
-        .progress-bar {
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-control {
             width: 100%;
-            background-color: #e9ecef;
+            padding: 10px;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            height: 30px;
-            position: relative;
-            overflow: hidden;
         }
-
-        .progress-bar span {
-            display: block;
-            height: 100%;
-            background-color: #43a047;
-            width: {{ (17 / 127) * 100 }}%;
-            border-radius: 5px;
-            text-align: center;
-            line-height: 30px;
-            color: white;
-            font-weight: bold;
-            transition: width 0.5s ease;
-        }
-
-        /* Section Styling */
-        .sections-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .section {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            flex: 1;
-            text-align: center;
-        }
-
-        .section h2 {
-            margin-top: 0;
-            font-size: 20px;
-            color: maroon;
-        }
-
-        .section p {
-            color: #6c757d;
-            margin: 10px 0;
-        }
-
-        .section button {
+        .btn-primary {
             background-color: maroon;
             color: white;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+        }
+        .btn-primary:hover {
+            background-color: maroon;
         }
 
-        .section button:hover {
-            background-color: #9d1c4d;
-        }
-
-        /* Notification Styling */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #e3f2fd;
-            color: #2196f3;
-            padding: 15px 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            display: none;
-        }
-    </style>
+        </style>
 </head>
 <body>
 
@@ -249,65 +252,70 @@
         </a>
     </div>
 
-    <!-- Progress Bar Section -->
-    <div class="progress-container">
-        <h2>Degree Progress</h2>
-        <div class="progress-bar">
-            <a href="{{ route('student.degree.progress') }}" style="text-decoration: none;">
-                <span style="display: inline-block; background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px; width: {{ (17 / 127) * 100 }}%;">
-                    {{ 17 }} / 127 Credits
-                </span>
-            </a>
+    <div class="container">
+      <div class="container">
+    <!-- Display success and error messages -->
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+    <!-- Waitlist Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Course Name</th>
+                <th>Section</th>
+                <th>Position</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($waitlists as $waitlist)
+                <tr>
+                    <td>{{ $waitlist->courseSection->course->course_name }}</td>
+                    <td>{{ $waitlist->course->section }}</td>
+                    <td>{{ $waitlist->position }}</td>
+                    <td>
+                        <span class="badge badge-{{ $waitlist->status == 'active' ? 'primary' : 'success' }}">
+                            {{ ucfirst($waitlist->status) }}
+                        </span>
+                    </td>
+                    <td>
+                        <form action="{{ route('student.waitlist.leave', $waitlist->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button>Leave</button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5">No waitlist entries found.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+    <!-- Join Waitlist Form -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Join a Waitlist</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('waitlist.submit') }}" method="POST">
+                @csrf
+                <label for="course">Select Course:</label>
+                <select name="course_id" id="course" required>
+                    <option value="" disabled selected>Select a course</option>
+                    @foreach($courses as $course)
+                        <option value="{{ $course->id }}">{{ $course->course_name}} ({{$course->section}})</option>
+                    @endforeach
+                </select>
+                <button type="submit">Submit Waitlist Request</button>
+            </form>
         </div>
     </div>
-
-    <!-- Course Management and Consultation Sections -->
-    <div class="sections-container">
-        <div class="section">
-            <h2>Course Management</h2>
-            <p>Manage your course registration through Smart Course Registration.</p>
-            <a href="{{ route('student.courses.register') }}">
-                <button>Register Now!</button>
-            </a>
-        </div>
-        <div class="section">
-            <h2>Need Consultation?</h2>
-            <p>Chat with your Academic Staff using Smart Course Registration.</p>
-            <a href="{{ route('student.chat') }}">
-                <button>Start Chat</button>
-            </a>            
-        </div>
-    </div>
-
-    <!-- Registered Credit Hours Section -->
-   <div class="progress-container">
-       <h2>Registered Credit Hours</h2>
-       <div style="text-align: center; padding: 10px 0; font-size: 18px; font-weight: bold; color: maroon;">
-        <a href="{{ route('student.credit.hours') }}" style="color: maroon; text-decoration: none;">
-            {{ $currentCredits }} Credit Hours Registered
-        </a>
-       </div>
-    </div>
-
 </div>
-
-@foreach($notifications as $notification)
-    <div class="notification">
-        {{ $notification }}
-    </div>
-@endforeach
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const notifications = document.querySelectorAll('.notification');
-        notifications.forEach(notification => {
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 5000);
-        });
-    });
-</script>
-
 </body>
-</html>
