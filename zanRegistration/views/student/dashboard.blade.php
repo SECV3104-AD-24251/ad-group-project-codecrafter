@@ -93,41 +93,44 @@
             background-color: #f1f1f1;
         }
 
-        /* Navigation Bar */
+        /* Navigation Styling */
         .nav {
             display: flex;
-            justify-content: space-around;
-            background-color: white;
-            padding: 10px;
+            justify-content: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
             border-radius: 10px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .nav a {
+            padding: 15px 20px;
             text-decoration: none;
             color: maroon;
-            font-size: 16px;
             font-weight: bold;
+            font-size: 16px;
+            border-right: 1px solid #ddd;
             display: flex;
             align-items: center;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+        }
+
+        .nav a:last-child {
+            border-right: none;
+        }
+
+        .nav a i {
+            margin-right: 10px;
+        }
+
+        .nav a.active {
+            color: maroon;
+            border-radius: 10px 10px 0 0;
         }
 
         .nav a:hover {
             background-color: maroon;
             color: white;
-        }
-
-        .nav a.active {
-            background-color: maroon;
-            color: white;
-        }
-
-        .nav a i {
-            margin-right: 10px;
         }
 
         /* Progress Bar Styling */
@@ -201,20 +204,6 @@
         .section button:hover {
             background-color: #9d1c4d;
         }
-
-        /* Notification Styling */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #e3f2fd;
-            color: #2196f3;
-            padding: 15px 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -273,7 +262,7 @@
         <div class="section">
             <h2>Need Consultation?</h2>
             <p>Chat with your Academic Staff using Smart Course Registration.</p>
-            <a href="{{ route('student.chat') }}">
+            <a href="{{ route('student.courses.consultation')}}">
                 <button>Start Chat</button>
             </a>            
         </div>
@@ -289,25 +278,31 @@
        </div>
     </div>
 
-</div>
-
-@foreach($notifications as $notification)
-    <div class="notification">
-        {{ $notification }}
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>Notifications</h4>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                @foreach (auth()->user()->notifications as $notification)
+                    <li class="list-group-item {{ $notification->unread() ? 'list-group-item-warning' : '' }}">
+                        <strong>{{ $notification->data['course_name'] }}</strong>: 
+                        {{ $notification->data['message'] }}
+                        <small class="text-muted d-block">{{ $notification->created_at->diffForHumans() }}</small>
+                        @if ($notification->unread())
+                            <form action="{{ route('notifications.markAsRead', $notification->id) }}" method="POST" class="mt-2">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-primary">Mark as Read</button>
+                            </form>
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
+        </div>
     </div>
-@endforeach
+    
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const notifications = document.querySelectorAll('.notification');
-        notifications.forEach(notification => {
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 5000);
-        });
-    });
-</script>
+</div>
 
 </body>
 </html>
