@@ -15,6 +15,7 @@ use App\Http\Controllers\CourseRegistrationController;
 use App\Http\Controllers\ProcessRegistrationController;
 use App\Http\Controllers\Student\DegreeProgressController;
 use App\Http\Controllers\StudentCourseRegisteredController;
+use App\Http\Controllers\ConsultationController;
 
 // Welcome Page
 Route::get('/', function () {
@@ -100,3 +101,8 @@ Route::post('/waitlist/action', [WaitlistController::class, 'handleWaitlistActio
 Route::get('/notifications', [NotificationController::class, 'showNotifications'])->name('student.notifications');
 Route::get('/notifications/read/{notificationId}', [NotificationController::class, 'markAsRead'])->name('notification.read');
 
+//Consultation Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/student/courses/consultation', [ConsultationController::class, 'index'])->name('student.courses.consultation');
+    Route::post('/student/courses/consultation/store', [ConsultationController::class, 'store'])->name('student.courses.consultation.store');
+});
