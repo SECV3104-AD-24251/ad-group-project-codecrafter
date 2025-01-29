@@ -222,7 +222,7 @@
     <!-- Header -->
     <div class="header">
         <div>
-            <h1>Welcome, {{ Auth::user()->name }}</h1>
+            <h1>CodeCrafter</h1>
             <div class="system-name">Smart Course Registration</div>
         </div>
         <div class="dropdown">
@@ -287,4 +287,37 @@
 </div>
 
 </body>
+
+@if(session('notification'))
+    <div id="notification-popup" style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #dff0d8;
+        color: #3c763d;
+        padding: 15px 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        display: none;
+    ">
+        {{ session('notification') }}
+    </div>
+@endif
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const notification = document.getElementById('notification-popup');
+        if (notification) {
+            // Show the notification
+            notification.style.display = 'block';
+
+            // Hide after 5 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+    });
+</script>
+
 </html>

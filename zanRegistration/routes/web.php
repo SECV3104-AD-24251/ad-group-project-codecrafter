@@ -1,10 +1,8 @@
 <?php
 
 use App\Http\Controllers\NotificationController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\MessageController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AcademicController;
 use App\Http\Controllers\WaitlistController;
@@ -16,6 +14,7 @@ use App\Http\Controllers\ProcessRegistrationController;
 use App\Http\Controllers\Student\DegreeProgressController;
 use App\Http\Controllers\StudentCourseRegisteredController;
 use App\Http\Controllers\ConsultationController;
+
 
 // Welcome Page
 Route::get('/', function () {
@@ -77,10 +76,10 @@ Route::delete('/waitlist/leave/{id}', [WaitlistController::class, 'leave'])->nam
 Route::get('/academic/course-approvals', [AcademicController::class, 'courseApprovals'])->name('academic.course.approvals');
 
 // Chat
-Route::middleware(['auth'])->group(function () {
-    Route::get('/chat', [MessageController::class, 'index']);
-    Route::get('/messages/{user}', [MessageController::class, 'show']);
-    Route::post('/messages', [MessageController::class, 'store']);
+Route::middleware('auth')->group(function () {
+    Route::get('/chat', [ChatController::class, 'showChat'])->name('index');
+    Route::get('/chat/messages/{user}', [ChatController::class, 'fetchMessages'])->name('chat.messages');
+    Route::post('/chat/messages', [ChatController::class, 'sendMessage'])->name('chat.send');
 });
 
 //Waitlist

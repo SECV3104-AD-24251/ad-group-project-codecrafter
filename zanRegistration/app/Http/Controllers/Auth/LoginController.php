@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\UserNotification;
+use Illuminate\Auth\AuthenticatesUsers;
+
 
 class LoginController extends Controller
 {
+
     // Show the login form
     public function showLoginForm()
     {
@@ -43,16 +47,27 @@ class LoginController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function authenticated(Request $request, $user)
-{
-    if ($user->role === 'academic_staff') {
-        return redirect()->route('academic.dashboard');
+    {
+        // Send login success email notification
+        $details = [
+            'subject' => 'Successful Login',
+            'body' => 'You have successfully logged into your account.',
+            'actionText' => 'View Account',
+            'actionUrl' => route('account.show', $user->id),
+        ];
+
+        $user->notify(new UserNotification($details));
+
+        if ($user->role === 'academic_staff') {
+            return redirect()->route('academic.dashboard');
+        }
+
+        if ($user->role === 'student') {
+            return redirect()->route('student.dashboard');
+        }
+
+        return redirect('/'); // Fallback to home or error page
     }
 
-    if ($user->role === 'student') {
-        return redirect()->route('student.dashboard');
-    }
-
-    return redirect('/'); // Fallback to home or error page
-}
 
 }

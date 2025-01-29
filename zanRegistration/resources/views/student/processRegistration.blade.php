@@ -229,7 +229,6 @@
             }
         </script>
         
-        <button onclick="checkConflict({{ $course->id }})">Register</button>
 
         <!-- Link to Registered Courses -->
         <a href="{{ route('student.courses.registered') }}">Go to Registered Courses</a>

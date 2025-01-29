@@ -28,6 +28,4 @@ public function courseSection()
         return $this->belongsTo(SectionInfo::class, 'course_id', 'id');
     }
 
-
-
 }

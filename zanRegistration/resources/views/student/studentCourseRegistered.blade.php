@@ -1,28 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registered Courses</title>
+    <title>Waitlist Management</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Global Styling */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fc;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9fafb;
             margin: 0;
             padding: 0;
+            color: #333;
         }
 
         .container {
             width: 90%;
-            max-width: 800px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
+        /* Header Styling */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: maroon;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .header .system-name {
+            font-size: 18px;
+            font-weight: 400;
+            color: #e0e0e0;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-button {
+            background-color: white;
+            color: maroon;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            color: maroon;
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Navigation Bar */
+        .nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: maroon;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav a:hover {
+            background-color: maroon;
+            color: white;
+        }
+
+        .nav a.active {
+            background-color: maroon;
+            color: white;
+        }
+
+        .nav a i {
+            margin-right: 10px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -117,13 +230,42 @@
         color: #000;
         text-decoration: none;
     }
-    </style>
+
+        </style>
 </head>
-
 <body>
-    <div class="container">
-        <h2>Your Registered Courses</h2>
 
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div>
+            <h1>Welcome, {{ Auth::user()->name }}</h1>
+            <div class="system-name">Smart Course Registration</div>
+        </div>
+        <div class="dropdown">
+            <button class="dropdown-button">Profile</button>
+            <div class="dropdown-menu">
+                <a href="#">View Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Navigation Bar -->
+    <div class="nav">
+        <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="{{ route('student.waitlist') }}" class="{{ request()->routeIs('student.waitlist') ? 'active' : '' }}">
+            <i class="fas fa-list"></i> Waitlist Management
+        </a>
+        <a href="{{ route('student.courses.registered') }}" class="{{ request()->routeIs('student.courses.registered') ? 'active' : '' }}">
+            <i class="fas fa-book"></i> Course Registered
+        </a>
+    </div>
+
+    <div class="container">
         @if (session('success'))
             <p class="message">{{ session('success') }}</p>
         @elseif (session('error'))
@@ -189,7 +331,6 @@
 
         <br>
         <!-- Back Button -->
-        <a href="{{ route('student.dashboard') }}" class="back-button">Go Back to Dashboard</a>
         <a href="{{ route('student.courses.register') }}" class="back-button" style="margin-top: 10px;">Go Back to Course Registration</a>
     </div>
 </body>

@@ -1,39 +1,27 @@
-<?php 
+<?php
 namespace App\Events;
 
-use App\Models\User;
+use App\Models\Message;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Queue\SerializesModels;
 
 class MessageSent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use InteractsWithSockets, SerializesModels;
 
-    public $user;
     public $message;
 
-    public function __construct($message)
+    public function __construct(Message $message)
     {
         $this->message = $message;
     }
 
-    // Broadcast on a private channel
     public function broadcastOn()
     {
-        return new PrivateChannel('chat.' . $this->user->id);
-    }
-
-    // Include additional data in the broadcast
-    public function broadcastWith()
-    {
-        return [
-            'message' => $this->message,
-            'user' => $this->user->name,
-            'user_id' => $this->user->id,
-        ];
+        return new PrivateChannel('chat.' . $this->message->receiver_id);
     }
 }

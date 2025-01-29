@@ -49,17 +49,6 @@ class User extends Authenticatable
         ];
     }
 
-    public function completedCourses()
-    {
-        return $this->hasMany(CourseCompletion::class);
-    }
-
-    public function calculateCreditHours()
-    {
-    // Assuming you have a `registeredCourses` relationship
-    return $this->registeredCourses()->sum('credits');
-    }
-
     public function registeredCourses()
     {
     return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id');
@@ -74,5 +63,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Waitlist::class, 'student_id');
     }
+
+    public function sentMessages()
+{
+    return $this->hasMany(Message::class, 'sender_id');
+}
+
+public function receivedMessages()
+{
+    return $this->hasMany(Message::class, 'receiver_id');
+}
 
 }

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Consultation;
 use App\Models\User;
+use App\Models\Consultation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ConsultationController extends Controller
 {
     public function index()
     {
         // Fetch advisors from the database
-        $advisors = User::where('role', 'advisor')->get();
+        $advisors = User::where('role', 'academic_staff')->get();
 
         // Return the consultation view
         return view('student.consultation', compact('advisors'));
@@ -20,11 +21,11 @@ class ConsultationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'advisor_id' => [
+            'receiver_id' => [
                 'required',
                 'exists:users,id',
                 function ($attribute, $value, $fail) {
-                    if (!User::where('id', $value)->where('role', 'advisor')->exists()) {
+                    if (!User::where('id', $value)->where('role', 'academic_staff')->exists()) {
                         $fail('The selected advisor is invalid.');
                     }
                 },
@@ -32,8 +33,8 @@ class ConsultationController extends Controller
         ]);
 
         Consultation::create([
-            'advisor_id' => $request->advisor_id,
-            'student_id' => auth()->id(),
+            'receiver_id' => $request->receiver_id,
+            'sender_id' => Auth::id(),
             'scheduled_at' => now()->addDays(1), // Default scheduled time
             'status' => 'pending',
         ]);

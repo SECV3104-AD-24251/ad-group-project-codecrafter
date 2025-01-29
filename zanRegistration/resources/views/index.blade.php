@@ -51,17 +51,17 @@ $('.staff-member').click(function(e) {
 
 // Load messages
 function loadMessages(userId) {
-    $.get(`/messages/${userId}`, function(messages) {
+    $.get(/messages/${userId}, function(messages) {
         let html = '';
         messages.forEach(message => {
             const isOwn = message.sender_id == {{ auth()->id() }};
-            html += `
+            html += 
                 <div class="message ${isOwn ? 'text-right' : ''}">
                     <div class="message-content ${isOwn ? 'bg-primary text-white' : 'bg-light'}">
                         ${message.message}
                     </div>
                 </div>
-            `;
+            ;
         });
         $('#chat-messages').html(html);
     });
