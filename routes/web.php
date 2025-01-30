@@ -1,46 +1,56 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\StudentDashboardController;
+use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\StudentCourseRegisteredController;
 use App\Http\Controllers\CourseRegistrationController;
 use App\Http\Controllers\ProcessRegistrationController;
+use App\Http\Controllers\PreferenceController;
 
+// Default route
 Route::get('/', function () {
     return view('welcome');
 });
 
 // Redirect route based on role selection
 Route::get('/login/redirect', function (Illuminate\Http\Request $request) {
-    $role = $request->input('role'); // Get the role selected by the user
+    $role = $request->input('role');
 
     if ($role == 'student') {
-        return redirect()->route('login'); // Redirect to the student login page
+        return redirect()->route('login');
     } elseif ($role == 'academic_staff') {
-        return redirect()->route('login'); // Redirect to the same login page (if unified)
+        return redirect()->route('login');
     } else {
-        return redirect('/'); // If no role selected, redirect to the welcome page
+        return redirect('/');
     }
 })->name('login.redirect');
 
+// Authentication Routes
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
-// Unified login route for both students and academic staff
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
-//Student dashboard
+// Student Dashboard
 Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
-//To view course registered
-Route::get('/student/courses/registered', [StudentCourseRegisteredController::class, 'index'])->name('student.courses.registered');
 
-Route::get('/academic-dashboard', function () {
-    return view('academic.dashboard'); // Academic staff's dashboard view
-})->name('academic.dashboard');
+// To view registered courses
+Route::get('/student/courses/registered', [StudentCourseRegisteredController::class, 'index'])
+    ->name('student.courses.registered');
 
-// Course Registration Routes
+// Consultation Routes
+Route::get('/student/courses/consultation', [ConsultationController::class, 'index'])
+    ->name('student.courses.consultation');
+
+Route::post('/student/courses/consultation', [ConsultationController::class, 'store'])
+    ->name('student.courses.consultation.store');
+
+
+// Show subject list and handle semester filter
 Route::get('/student/courses/register', [CourseRegistrationController::class, 'showSubjectList'])
     ->name('student.courses.register');
 
@@ -48,12 +58,17 @@ Route::get('/student/courses/register', [CourseRegistrationController::class, 's
 Route::get('/course/{course_id}/sections', [ProcessRegistrationController::class, 'showSections'])
     ->name('processRegistration.show');
 
-// Route to process enrollment
+// Route to enroll or unenroll from a section
 Route::post('/course/section/enroll', [ProcessRegistrationController::class, 'enroll'])
     ->name('processRegistration.enroll');
 
-// Route after enrollment
-Route::post('/course/success', [ProcessRegistrationController::class, 'enroll'])
-    ->name('student.courses.registered');
+Route::post('/mark-priority', [CourseRegistrationController::class, 'markAsHighPriority'])
+    ->name('mark.priority');
 
+Route::get('/high-priority-courses', [CourseRegistrationController::class, 'getHighPriorityCourses'])
+    ->name('highPriority.courses');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/preferences', [PreferenceController::class, 'index'])->name('preferences.index');
+    Route::post('/preferences', [PreferenceController::class, 'store'])->name('preferences.store');
+});
