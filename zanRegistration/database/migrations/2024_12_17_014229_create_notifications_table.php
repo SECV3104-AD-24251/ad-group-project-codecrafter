@@ -1,27 +1,21 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
-return new class extends Migration
+class Notification extends Model
 {
-  
-    public function up(): void
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    protected static function boot()
     {
-        Schema::create('notifications', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('type');
-            $table->morphs('notifiable');
-            $table->text('data');
-            $table->timestamp('read_at')->nullable();
-            $table->timestamps();
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
         });
     }
-
-    
-    public function down(): void
-    {
-        Schema::dropIfExists('notifications');
-    }
-};
+}
