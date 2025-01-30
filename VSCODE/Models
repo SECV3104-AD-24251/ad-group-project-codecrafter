@@ -1,0 +1,118 @@
+//Subject.php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Subject extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'subject_code',
+        'subject_name',
+        'credit_hours',
+    ];
+}
+
+//User.php
+<?php
+
+namespace App\Models;
+
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class User extends Authenticatable
+{
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'matrics_number',
+        'role', // *** Added role to the mass assignable attributes ***
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+
+    // *** Added: Relationships ***
+
+    /**
+     * Get consultations where the user is an advisor.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function consultationsAsAdvisor()
+    {
+        return $this->hasMany(Consultation::class, 'advisor_id');
+    }
+
+    /**
+     * Get consultations where the user is a student.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function consultationsAsStudent()
+    {
+        return $this->hasMany(Consultation::class, 'student_id');
+    }
+}
+
+
+//Consultation.php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Consultation extends Model
+{
+    use HasFactory;
+
+    protected $fillable = ['advisor_id', 'student_id', 'scheduled_at', 'status'];
+
+    public function advisor()
+    {
+        return $this->belongsTo(User::class, 'advisor_id');
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'student_id');
+    }
+}

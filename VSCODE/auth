@@ -1,0 +1,145 @@
+//login.blade.php
+@extends("layouts.default")
+@section("title", "Login")
+@section("content")
+   <main class="mt-5">
+      <div class="container">
+          <div class="row justify-content-center">
+              <div class="col-md-4">
+                @if(session()->has("success"))
+                <div class="alert alert-success">
+                    {{session()->get("success")}}
+                </div>
+                @endif
+                @if(session()->has("error"))
+                <div class="alert alert-success">
+                    {{session()->get("error")}}
+                </div>
+                @endif
+                  <div class="card">
+                      <h3 class="card-header text-center">Login</h3>
+                     <div class="card-body">
+                        <form method="POST" action="{{route("login.post")}}">
+                            @csrf
+                            <div class="form-group mb-3">
+                                <input type="text" placeholder="Email" id="email" class="form-control" name="email" required autofocus>
+                                @if ($errors->has('email'))
+                                <span class="text-danger">{{$errors->first('email')}}</span>
+                                @endif
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="password" placeholder="Password" id="password" class="form-control" name="password" required>
+                                @if($errors->has('password'))
+                                <span class="text-danger">{{$errors->first('password')}}</span>
+                                @endif
+                            </div>
+                            <div class="d-grid mx-auto">
+                                <button type="submit" class="btn btn-dark btn-block">Sign In</button>
+                            </div>
+                        </form>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </main>
+@endsection
+
+//profile.blade.php
+@extends("layouts.default")
+@section("title", "Profile")
+@section("content")
+<main class="container profile-container">
+    <div class="profile-header">
+        <h1>Welcome, {{ $user->name }}</h1>
+    </div>
+    <div class="profile-info">
+        <div class="info-item">
+            <p class="info-label">Full Name:</p>
+            <p class="info-value">{{ $user->name }}</p>
+        </div>
+        <div class="info-item">
+            <p class="info-label">Email:</p>
+            <p class="info-value">{{ $user->email }}</p>
+        </div>
+        <div class="info-item">
+            <p class="info-label">Matric Number:</p>
+            <p class="info-value">{{ $user->matrics_number ?? 'Not set' }}</p>
+        </div>
+    </div>
+    <div class="profile-edit-btn">
+        <a href="{{ route('profile.edit') }}">Edit Profile</a>
+    </div>
+    <div class="profile-actions">
+        <button type="button" class="save">Save Changes</button>
+        <button type="button" class="cancel">Cancel</button>
+    </div>
+</main>
+@endsection
+
+//register.blade.php
+@extends("layouts.default")
+@section("title", "Register")
+@section("content")
+   <main class="mt-5">
+      <div class="container">
+          <div class="row justify-content-center">
+              <div class="col-md-4">
+                @if(session()->has("success"))
+                <div class="alert alert-success">
+                    {{session()->get("success")}}
+                </div>
+                @endif
+                @if(session()->has("error"))
+                <div class="alert alert-success">
+                    {{session()->get("error")}}
+                </div>
+                @endif
+                @if($errors->any())
+                <div class="alert alert-danger">
+                   <ul>
+                      @foreach($errors->all() as $error)
+                         <li>{{ $error }}</li>
+                      @endforeach
+                 </ul>
+                </div>
+                @endif
+
+                  <div class="card">
+                      <h3 class="card-header text-center">Register</h3>
+                     <div class="card-body">
+                        <form method="POST" action="{{route("register.post")}}">
+                            @csrf
+                            <div class="form-group mb-3">
+                                <input type="text" placeholder="Fullname" id="name" class="form-control" name="fullname" autofocus>
+                                @if ($errors->has('fullname'))
+                                <span class="text-danger">{{$errors->first('fullname')}}</span>
+                                @endif
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="text" placeholder="Email" id="email" class="form-control" name="email" required autofocus>
+                                @if ($errors->has('email'))
+                                <span class="text-danger">{{$errors->first('email')}}</span>
+                                @endif
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="password" placeholder="Password" id="password" class="form-control" name="password" required>
+                                <div class="form-group mb-3">
+                                    <input type="password" placeholder="Confirm Password" id="password_confirmation" class="form-control" name="password_confirmation" required>
+                                </div>                                                               
+                                @if($errors->has('password'))
+                                <span class="text-danger">{{$errors->first('password')}}</span>
+                                @endif
+                                    
+                            </div>
+                            <div class="d-grid mx-auto">
+                                <button type="submit" class="btn btn-dark btn-block">Sign Up</button>
+                            </div>
+                        </form>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </main>
+@endsection
