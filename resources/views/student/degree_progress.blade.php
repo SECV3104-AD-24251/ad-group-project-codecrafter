@@ -29,7 +29,6 @@
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
-            animation: fadeIn 0.5s ease-in-out;
         }
         .progress-bar {
             width: 100%;
@@ -56,7 +55,6 @@
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
-            animation: fadeIn 0.5s ease-in-out;
         }
         .section h2 {
             color: maroon;
@@ -64,23 +62,21 @@
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
-        .elective-list,
-        .mandatory-list {
+        .course-list,
+        .mandatory-list,
+        .elective-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-        .elective-list li,
-        .mandatory-list li {
+        .course-list li,
+        .mandatory-list li,
+        .elective-list li {
             background-color: #f8f9fa;
             padding: 15px;
             margin-bottom: 10px;
             border-radius: 5px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .elective-list li:hover,
-        .mandatory-list li:hover {
-            background-color: #e9ecef;
         }
         button {
             display: block;
@@ -93,7 +89,6 @@
             font-size: 16px;
             text-align: center;
             margin: 20px auto 0;
-            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #5a0d0d;
@@ -103,19 +98,8 @@
             background-color: #ffe6e6;
             padding: 10px;
             border-radius: 5px;
-            box-shadow: 0px 2px 5px rgba(255, 0, 0, 0.2);
             text-align: center;
             margin-bottom: 20px;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
     </style>
 </head>
@@ -124,7 +108,6 @@
 <div class="container">
     <h1>Degree Progress</h1>
 
-    <!-- Handle error messages -->
     @if(session('errors'))
         <div class="error-message">
             <strong>Error:</strong> {{ session('errors')->first() }}
@@ -134,10 +117,10 @@
     <!-- Progress Bar -->
     <div class="progress-container">
         <h2>Course Progress</h2>
-        @if (isset($totalCourses) && $totalCourses > 0)
+        @if ($totalCourses > 0)
             <div class="progress-bar">
                 <span style="width: {{ $completionRate }}%;">
-                    {{ $completedCourses->count() }} / {{ $totalCourses }} Courses Completed
+                    {{ count($registeredCourseIds) }} / {{ $totalCourses }} Courses Completed
                 </span>
             </div>
         @else
@@ -145,32 +128,52 @@
         @endif
     </div>
 
+    <!-- Current Semester Courses -->
+    <div class="section">
+        <h2>Current Semester Courses</h2>
+        @if ($mandatoryCourses->isEmpty() && $electiveCourses->isEmpty())
+            <p>All courses have been registered.</p>
+        @else
+            <ul>
+                @foreach ($mandatoryCourses as $course)
+                    <li>{{ $course->subject_name }} (Mandatory)</li>
+                @endforeach
+                @foreach ($electiveCourses as $course)
+                    <li>{{ $course->subject_name }} (Elective)</li>
+                @endforeach
+            </ul>
+        @endif
+    </div>
+
     <!-- Remaining Mandatory Courses -->
     <div class="section">
         <h2>Remaining Mandatory Courses</h2>
-        @if (isset($degreePlan) && $degreePlan->getPendingMandatoryCourses($completedCourses)->count() > 0)
+        @if (count($registeredCourseIds) < $totalCourses)
             <ul class="mandatory-list">
-                @foreach ($degreePlan->getPendingMandatoryCourses($completedCourses) as $course)
-                    <li>{{ $course->name }}</li>
+                @foreach ($mandatoryCourses as $course)
+                @if (!in_array($course->id, $registeredCourseIds))
+                        <li>{{ $course->subject_name }} ({{ $course->subject_code }})</li>
+                    @endif
                 @endforeach
             </ul>
         @else
-            <p>All mandatory courses have been completed or no degree plan is available.</p>
+            <p>All mandatory courses have been completed.</p>
         @endif
     </div>
 
     <!-- Suggested Electives -->
     <div class="section">
         <h2>Suggested Electives</h2>
-        @if (isset($suggestedElectives) && $suggestedElectives->count() > 0)
+        @if ($suggestedElectives->count() > 0)
             <ul class="elective-list">
                 @foreach ($suggestedElectives as $elective)
-                    <li>{{ $elective->name }}</li>
+                    <li>{{ $elective->subject_name }} ({{ $elective->subject_code }})</li>
                 @endforeach
             </ul>
         @else
             <p>No elective suggestions available at this time.</p>
         @endif
+
     </div>
 
     <button onclick="window.history.back();">Back to Dashboard</button>
