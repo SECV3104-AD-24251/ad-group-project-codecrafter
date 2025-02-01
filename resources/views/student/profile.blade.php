@@ -32,7 +32,7 @@
             font-weight: bold;
         }
 
-        input, button {
+        input, button, select {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -62,6 +62,26 @@
 
         <label>Email:</label>
         <input type="email" name="email" value="{{ auth()->user()->email }}" required>
+
+        <label>Program:</label>
+        <input type="text" name="program" value="{{ auth()->user()->program }}" required>
+
+        <label>Current Semester:</label>
+        <select name="current_sem" required>
+            @php
+                $semesters = [
+                    'Year 1 [Semester 1]', 'Year 1 [Semester 2]',
+                    'Year 2 [Semester 1]', 'Year 2 [Semester 2]',
+                    'Year 3 [Semester 1]', 'Year 3 [Semester 2]'
+                ];
+            @endphp
+            @foreach ($semesters as $semester)
+                <option value="{{ $semester }}" {{ auth()->user()->current_sem == $semester ? 'selected' : '' }}>
+                    {{ $semester }}
+                </option>
+            @endforeach
+        </select>
+
 
         <button type="submit">Update Profile</button>
     </form>
