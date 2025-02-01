@@ -95,7 +95,7 @@
         <!-- Program Filters -->
         <div class="filter-section">
             <label>
-                <input type="checkbox" id="allPrograms" onchange="toggleAllPrograms(this)" 
+                <input type="checkbox" id="allPrograms" onchange="toggleAllPrograms(this)"
                 @if(in_array('ALL', $selectedPrograms ?? ['ALL'])) checked @endif> ALL
             </label>
 
@@ -121,7 +121,7 @@
             @else
                 @foreach ($subjects as $subject)
                     @php
-                        $subjectPrograms = explode('/', $subject->program); 
+                        $subjectPrograms = explode('/', $subject->program);
                         $shouldShow = count(array_intersect($subjectPrograms, $selectedPrograms)) > 0;
                     @endphp
 
