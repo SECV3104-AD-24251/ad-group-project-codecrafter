@@ -74,4 +74,10 @@ public function receivedMessages()
     return $this->hasMany(Message::class, 'receiver_id');
 }
 
+public function completedCourses()
+{
+    return $this->belongsToMany(Course::class, 'completed_courses', 'student_id', 'course_id');
+}
+
+
 }
