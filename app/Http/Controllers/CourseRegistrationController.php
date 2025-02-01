@@ -66,9 +66,6 @@ class CourseRegistrationController extends Controller
         ]);
     }
 
-
-
-
     /**
      * Process the subject registration.
      *
