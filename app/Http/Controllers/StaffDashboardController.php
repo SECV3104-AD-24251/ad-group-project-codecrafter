@@ -1,4 +1,4 @@
-<?php
+<?php 
 namespace App\Http\Controllers;
 
 use App\Models\Course;
@@ -30,8 +30,8 @@ public function updateStatus(Request $request)
     $course->save();
 
     // Set the flash message
-    $message = $status === 'approved'
-        ? 'The course has been successfully approved!'
+    $message = $status === 'approved' 
+        ? 'The course has been successfully approved!' 
         : 'The course has been rejected.';
     session()->flash('notification', $message);
 

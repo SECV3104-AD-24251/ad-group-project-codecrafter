@@ -27,6 +27,6 @@ class NotificationController extends Controller
 
     // Pass them to the view
     return view('student.notifications', compact('notifications'));
-    }
+    }  
 
 }

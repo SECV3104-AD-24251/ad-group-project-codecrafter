@@ -25,4 +25,9 @@ class Course extends Model
     {
         return $this->hasMany(SectionInfo::class, 'course_id');
     }
+
+    public function students()
+   {
+    return $this->belongsToMany(Student::class, 'students', 'course_id', 'student_id');
+   }
 }

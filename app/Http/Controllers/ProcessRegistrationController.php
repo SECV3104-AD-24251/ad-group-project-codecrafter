@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SectionInfo;
-use App\Models\User;
-use App\Models\Course;
 
 class ProcessRegistrationController extends Controller
 {
+
     public function showSections($course_id)
     {
         // Fetch sections for the selected course
@@ -20,12 +19,12 @@ class ProcessRegistrationController extends Controller
 
         return view('student.processRegistration', compact('sections', 'course_id', 'userEnrolledSection'));
     }
-
     /**
      * Enroll or Unenroll user into/from a section.
      */
     public function enroll(Request $request)
     {
+
         // Validate the incoming request
         $validated = $request->validate([
             'section_id' => 'required|exists:section_info,id',
@@ -37,20 +36,12 @@ class ProcessRegistrationController extends Controller
         // Find the section
         $section = SectionInfo::findOrFail($validated['section_id']);
 
-        // Fetch the course's credit hours
-        $course = Course::findOrFail($validated['course_id']);
-        $creditHours = $course->credit_hours; // Get credit hours
-
         // Check if the user is already enrolled in the section
         if ($section->user_id === $user->id) {
             // Unenroll the user
             $section->user_id = null;
             $section->capacity += 1; // Increase capacity on unenroll
             $section->save();
-
-            // Deduct credit hours from the user's credits
-            $user->credits -= $creditHours;
-            $user->save();
 
             return redirect()->route('processRegistration.show', ['course_id' => $validated['course_id']])
                 ->with('success', 'You have successfully unenrolled from the section.');
@@ -77,11 +68,9 @@ class ProcessRegistrationController extends Controller
         $section->capacity -= 1; // Decrease capacity
         $section->save();
 
-        // Increment user's credits based on the enrolled course's credit hours
-        $user->credits += $creditHours;
-        $user->save();
-
         return redirect()->route('processRegistration.show', ['course_id' => $validated['course_id']])
             ->with('success', 'You have successfully enrolled in the section.');
+
+
     }
 }

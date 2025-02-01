@@ -132,7 +132,6 @@ class WaitlistController extends Controller
     ]);
 
     // Find the waitlist request
-    $waitlists = Waitlist::with(['courseSection.course'])->where('student_id', Auth::id())->get();
     $waitlist = Waitlist::find($validated['request_id']);
     $waitlist->status = $validated['status'];
     $waitlist->save();

@@ -7,7 +7,6 @@ use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\InsufficientCreditHoursNotification;
 use App\Models\HighPriorityCourse;
 
 
@@ -61,7 +60,7 @@ class CourseRegistrationController extends Controller
             'semesters' => $semesters,
             'subjects' => $subjects,
             'selectedSemester' => $selectedSemester,
-            'selectedPrograms' => $selectedPrograms, // 🔥 Now included
+            'selectedPrograms' => $selectedPrograms, 
             'programs' => Course::select('program')->distinct()->pluck('program'), // Ensure programs list is passed
         ]);
     }
@@ -79,7 +78,7 @@ class CourseRegistrationController extends Controller
 
         // Implement logic to register the subject (placeholder example)
         // Example: Save subject to the user's registered courses
-        $user = auth()->user();
+        $user = Auth::user();
         $user->registeredSubjects()->attach($subject_id);
 
         // Redirect to the registered courses page
@@ -100,7 +99,7 @@ class CourseRegistrationController extends Controller
 
     public function markAsHighPriority(Request $request)
     {
-        $student = auth()->user(); // Assuming authentication is used
+        $student = Auth::user(); 
         $courseId = $request->input('course_id');
 
         // Check if the course exists
@@ -122,7 +121,7 @@ class CourseRegistrationController extends Controller
 
     public function getHighPriorityCourses()
     {
-        $student = auth()->user();
+        $student = Auth::user();
 
         $highPriorityCourses = HighPriorityCourse::where('student_id', $student->id)
             ->with('course')

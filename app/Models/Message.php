@@ -8,9 +8,8 @@ class Message extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['sender_id', 'receiver_id', 'content', 'sender_role'];
+    protected $fillable = ['sender_id', 'receiver_id', 'message', 'read_at'];
 
-    // Relationship with the User model
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id');
