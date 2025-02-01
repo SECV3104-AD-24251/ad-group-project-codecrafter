@@ -95,10 +95,15 @@
         <!-- Program Filters -->
         <div class="filter-section">
             <label>
-                <input type="checkbox" id="allPrograms" onchange="toggleAllPrograms(this)" @if(in_array('ALL', $selectedPrograms ?? ['ALL'])) checked @endif>
-                ALL
+                <input type="checkbox" id="allPrograms" onchange="toggleAllPrograms(this)" 
+                @if(in_array('ALL', $selectedPrograms ?? ['ALL'])) checked @endif> ALL
             </label>
-            @foreach ($programs as $program)
+
+            @php
+                $allPrograms = ['SECBH', 'SECRH', 'SECJH', 'SECVH', 'SECPH', 'SCSEH'];
+            @endphp
+
+            @foreach ($allPrograms as $program)
                 <label>
                     <input type="checkbox" class="program-checkbox" value="{{ $program }}"
                            onchange="toggleIndividualProgram()"
@@ -115,15 +120,22 @@
                 <p>No courses available for the selected filters.</p>
             @else
                 @foreach ($subjects as $subject)
-                    <div class="course-item">
-                        <a href="{{ route('processRegistration.show', $subject->id) }}">
-                            {{ $subject->subject_code }} - {{ $subject->subject_name }} (Credit: {{ $subject->credit_hours }})
-                        </a>
-                        <label>
-                            <input type="checkbox" class="high-priority-checkbox" data-course-id="{{ $subject->id }}">
-                            Mark as High Priority
-                        </label>
-                    </div>
+                    @php
+                        $subjectPrograms = explode('/', $subject->program); 
+                        $shouldShow = count(array_intersect($subjectPrograms, $selectedPrograms)) > 0;
+                    @endphp
+
+                    @if ($shouldShow)
+                        <div class="course-item">
+                            <a href="{{ route('processRegistration.show', $subject->id) }}">
+                                {{ $subject->subject_code }} - {{ $subject->subject_name }} (Credit: {{ $subject->credit_hours }})
+                            </a>
+                            <label>
+                                <input type="checkbox" class="high-priority-checkbox" data-course-id="{{ $subject->id }}">
+                                Mark as High Priority
+                            </label>
+                        </div>
+                    @endif
                 @endforeach
             @endif
         </div>
