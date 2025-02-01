@@ -238,7 +238,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Navigation Bar -->
     <div class="nav">
         <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
@@ -275,8 +275,8 @@
         <tbody>
             @forelse ($waitlists as $waitlist)
                 <tr>
-                    <td>{{ $waitlist->course->course_name ?? 'N/A' }}</td>
-                    <td>{{ $waitlist->course->section ?? 'N/A' }}</td>
+                    <td>{{ $waitlist->course->course_name }}</td>
+                    <td>{{ $waitlist->course->section }}</td>
                     <td>{{ $waitlist->position }}</td>
                     <td>
                         <span class="badge badge-{{ $waitlist->status == 'active' ? 'primary' : 'success' }}">

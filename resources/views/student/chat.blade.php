@@ -169,9 +169,9 @@ window.Echo.private('chat.' + userId)
 
     if (message !== '' && receiverId !== '') {
         // Send the message to the server via axios
-        axios.post('/student/chat/send', {
-            receiver_id: receiverId,
-            message: message
+        axios.post('/student/chat/send', { 
+            receiver_id: receiverId, 
+            message: message 
         })
         .then(response => {
             // Append the message to the chat window

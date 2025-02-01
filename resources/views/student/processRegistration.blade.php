@@ -228,7 +228,7 @@
                     });
             }
         </script>
-
+        
 
         <!-- Link to Registered Courses -->
         <a href="{{ route('student.courses.registered') }}">Go to Registered Courses</a>

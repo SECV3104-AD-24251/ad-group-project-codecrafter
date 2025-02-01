@@ -12,7 +12,7 @@
         }
 
         .header {
-            background-color: #5a0000;
+            background-color: #5a0000; 
             color: white;
             padding: 45px;
             text-align: center;

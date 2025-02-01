@@ -55,7 +55,7 @@ function loadMessages(userId) {
         let html = '';
         messages.forEach(message => {
             const isOwn = message.sender_id == {{ auth()->id() }};
-            html +=
+            html += 
                 <div class="message ${isOwn ? 'text-right' : ''}">
                     <div class="message-content ${isOwn ? 'bg-primary text-white' : 'bg-light'}">
                         ${message.message}
@@ -70,7 +70,7 @@ function loadMessages(userId) {
 // Send message
 $('#send-message').click(function() {
     if (!selectedUserId) return;
-
+    
     const message = $('#message-input').val();
     if (!message) return;
 

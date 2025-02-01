@@ -251,7 +251,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Navigation Bar -->
     <div class="nav">
         <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
@@ -294,7 +294,7 @@
         }
     </script>
 @endif
-
+    
             <table>
                 <thead>
                     <tr>
@@ -309,8 +309,8 @@
                 <tbody>
                     @foreach ($registeredSections as $section)
                         <tr>
-                            <td>{{ $section->course->subject_code }}</td>
-                            <td>{{ $section->course->subject_name }}</td>
+                            <td>{{ $section->course->course_code }}</td>
+                            <td>{{ $section->course->course_name }}</td>
                             <td>{{ $section->section }}</td>
                             <td>{{ $section->lect_assigned }}</td>
                             <td>{{ $section->capacity }}</td>
@@ -327,7 +327,7 @@
                     @endforeach
                 </tbody>
             </table>
-
+        
 
         <br>
         <!-- Back Button -->

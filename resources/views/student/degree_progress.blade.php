@@ -4,94 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Degree Progress - Smart Course Registration</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fc;
-            margin: 0;
-            padding: 0;
-            color: #333;
+            background-color: #f8f9fa;
         }
         .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            max-width: 900px;
+            margin-top: 40px;
         }
-        h1 {
-            color: maroon;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .progress-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
         .progress-bar {
-            width: 100%;
+            animation: progressAnimation 1s ease-in-out;
+        }
+        @keyframes progressAnimation {
+            from { width: 0; }
+            to { width: {{ $completionRate }}%; }
+        }
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        .list-group-item:hover {
             background-color: #e9ecef;
-            border-radius: 8px;
-            height: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-        .progress-bar span {
-            display: block;
-            height: 100%;
-            background: linear-gradient(90deg, #28a745, #20c997);
-            border-radius: 8px;
-            text-align: center;
-            line-height: 30px;
-            color: white;
-            font-weight: bold;
-            transition: width 0.4s ease;
-        }
-        .section {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        .section h2 {
-            color: maroon;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        .course-list,
-        .mandatory-list,
-        .elective-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .course-list li,
-        .mandatory-list li,
-        .elective-list li {
-            background-color: #f8f9fa;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        button {
-            display: block;
-            background-color: maroon;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            text-align: center;
-            margin: 20px auto 0;
-        }
-        button:hover {
-            background-color: #5a0d0d;
         }
         .error-message {
             color: red;
@@ -101,82 +46,129 @@
             text-align: center;
             margin-bottom: 20px;
         }
+        button {
+            display: block;
+            background-color: #6f42c1;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #5a0d9e;
+        }
+
+        /* Back Button fixed to top-left */
+        .back-button {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background-color: maroon;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: rgb(165, 22, 22);
+        }
     </style>
 </head>
 <body>
 
+<!-- Back Button -->
+<button class="back-button" onclick="window.history.back();">
+    <i class="bi bi-arrow-left-circle"></i>
+</button>
+
 <div class="container">
-    <h1>Degree Progress</h1>
+    <h1 class="text-center text-danger mb-4">
+        <i class="bi bi-bar-chart-line-fill"></i> Degree Progress
+    </h1>
 
     @if(session('errors'))
-        <div class="error-message">
-            <strong>Error:</strong> {{ session('errors')->first() }}
+        <div class="alert alert-danger text-center">
+            <i class="bi bi-exclamation-circle-fill"></i> <strong>Error:</strong> {{ session('errors')->first() }}
         </div>
     @endif
 
     <!-- Progress Bar -->
-    <div class="progress-container">
-        <h2>Course Progress</h2>
+    <div class="card p-4 mb-4">
+        <h4 class="mb-3 text-success"><i class="bi bi-graph-up"></i> Course Progress</h4>
         @if ($totalCourses > 0)
-            <div class="progress-bar">
-                <span style="width: {{ $completionRate }}%;">
+            <div class="progress mb-3" style="height: 30px;">
+                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                     style="width: {{ $completionRate }}%;">
                     {{ count($registeredCourseIds) }} / {{ $totalCourses }} Courses Completed
-                </span>
+                </div>
             </div>
         @else
-            <p>No courses found in your degree plan.</p>
+            <p class="text-muted">No courses found in your degree plan.</p>
         @endif
     </div>
 
     <!-- Current Semester Courses -->
-    <div class="section">
-        <h2>Current Semester Courses</h2>
+    <div class="card p-4 mb-4">
+        <h4 class="mb-3 text-primary"><i class="bi bi-book"></i> Current Semester Courses</h4>
         @if ($mandatoryCourses->isEmpty() && $electiveCourses->isEmpty())
-            <p>All courses have been registered.</p>
+            <p class="text-muted">All courses have been registered.</p>
         @else
-            <ul>
+            <ul class="list-group">
                 @foreach ($mandatoryCourses as $course)
-                    <li>{{ $course->subject_name }} (Mandatory)</li>
+                    <li class="list-group-item">
+                        <span><i class="bi bi-check-circle-fill text-success"></i> {{ $course->course_name }} (Mandatory)</span>
+                    </li>
                 @endforeach
                 @foreach ($electiveCourses as $course)
-                    <li>{{ $course->subject_name }} (Elective)</li>
+                    <li class="list-group-item">
+                        <span><i class="bi bi-check-circle-fill text-warning"></i> {{ $course->course_name }} (Elective)</span>
+                    </li>
                 @endforeach
             </ul>
         @endif
     </div>
 
     <!-- Remaining Mandatory Courses -->
-    <div class="section">
-        <h2>Remaining Mandatory Courses</h2>
+    <div class="card p-4 mb-4">
+        <h4 class="mb-3 text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Remaining Mandatory Courses</h4>
         @if (count($registeredCourseIds) < $totalCourses)
-            <ul class="mandatory-list">
+            <ul class="list-group">
                 @foreach ($mandatoryCourses as $course)
-                @if (!in_array($course->id, $registeredCourseIds))
-                        <li>{{ $course->subject_name }} ({{ $course->subject_code }})</li>
+                    @if (!in_array($course->id, $registeredCourseIds))
+                        <li class="list-group-item">
+                            <span><i class="bi bi-x-circle-fill text-danger"></i> {{ $course->course_name }} ({{ $course->course_code }})</span>
+                        </li>
                     @endif
                 @endforeach
             </ul>
-        @else
-            <p>All mandatory courses have been completed.</p>
         @endif
     </div>
 
     <!-- Suggested Electives -->
-    <div class="section">
+    <div class="card p-4 mb-4">
         <h2>Suggested Electives</h2>
         @if ($suggestedElectives->count() > 0)
-            <ul class="elective-list">
+            <ul class="list-group">
                 @foreach ($suggestedElectives as $elective)
-                    <li>{{ $elective->subject_name }} ({{ $elective->subject_code }})</li>
+                    <li class="list-group-item">
+                        <span><i class="bi bi-lightbulb"></i> {{ $elective->course_name }} ({{ $elective->course_code }})</span>
+                    </li>
                 @endforeach
             </ul>
         @else
             <p>No elective suggestions available at this time.</p>
         @endif
-
     </div>
 
-    <button onclick="window.history.back();">Back to Dashboard</button>
 </div>
 
 </body>

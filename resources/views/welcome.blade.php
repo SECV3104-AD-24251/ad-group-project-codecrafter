@@ -16,13 +16,13 @@
             font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Prevent scrolling */
+            overflow: hidden; 
         }
 
         .container {
             display: flex;
             height: 100vh;
-            width: 100vw; /* Ensure it spans full width */
+            width: 100vw; 
         }
 
         .left-section {
@@ -69,22 +69,22 @@
 
         .form-select {
             border-radius: 25px;
-            padding: 10px 45px 10px 25px;
+            padding: 10px 45px 10px 25px; 
             margin-bottom: 20px;
             border: 1px solid #ccc;
-            font-size: 1.2rem;
-            width: 100%;
-            max-width: 400px;
+            font-size: 1.2rem; 
+            width: 100%; 
+            max-width: 400px; 
             text-align: center;
-            appearance: none;
+            appearance: none; 
             background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>') no-repeat right 20px center;
             background-size: 20px 20px;
         }
 
         .form-select:focus {
-            border-color: #5a0000; /* Highlight border on focus */
+            border-color: #5a0000; 
             outline: none;
-            box-shadow: 0 4px 12px rgba(90, 0, 0, 0.3); /* Add shadow effect */
+            box-shadow: 0 4px 12px rgba(90, 0, 0, 0.3); 
         }
 
 
@@ -99,7 +99,7 @@
             transition: background-color 0.3s, transform 0.2s;
             box-shadow: 0 5px 15px rgba(90, 0, 0, 0.2);
             width: 100%;
-            max-width: 400px;
+            max-width: 400px; 
         }
 
         .btn-primary:hover {
@@ -125,7 +125,7 @@
         <!-- Right Section -->
         <div class="right-section">
             <h2>Select Your Role</h2>
-            <form action="{{ route('login.redirect') }}" method="GET">
+            <form action="{{ route('login') }}" method="GET">
                 @csrf
                 <select name="role" class="form-select" required>
                     <option value="" disabled selected>Select Your Role</option>

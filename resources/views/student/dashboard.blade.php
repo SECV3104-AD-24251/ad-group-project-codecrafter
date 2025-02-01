@@ -12,7 +12,7 @@
         /* Global Styling */
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f9fafb;
+            background-color: #f4f7fc;
             margin: 0;
             padding: 0;
             color: #333;
@@ -29,17 +29,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: maroon;
+            background: linear-gradient(45deg, #800000, #9c1c4d);
             color: white;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
         }
 
         .header h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
         }
 
@@ -63,6 +63,11 @@
             border-radius: 5px;
             cursor: pointer;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-button:hover {
+            background-color: #f1f1f1;
         }
 
         .dropdown-menu {
@@ -87,6 +92,7 @@
             display: block;
             text-decoration: none;
             font-size: 14px;
+            transition: background-color 0.3s;
         }
 
         .dropdown-menu a:hover {
@@ -98,7 +104,7 @@
             display: flex;
             justify-content: space-around;
             background-color: white;
-            padding: 10px;
+            padding: 15px;
             border-radius: 10px;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
@@ -113,15 +119,10 @@
             align-items: center;
             padding: 10px 20px;
             border-radius: 5px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        .nav a:hover {
-            background-color: maroon;
-            color: white;
-        }
-
-        .nav a.active {
+        .nav a:hover, .nav a.active {
             background-color: maroon;
             color: white;
         }
@@ -175,11 +176,17 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             flex: 1;
             text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
         .section h2 {
             margin-top: 0;
-            font-size: 20px;
+            font-size: 22px;
             color: maroon;
         }
 
@@ -191,11 +198,12 @@
         .section button {
             background-color: maroon;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
+            transition: background-color 0.3s;
         }
 
         .section button:hover {
@@ -214,6 +222,8 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
     </style>
 </head>
@@ -223,19 +233,19 @@
     <!-- Header -->
     <div class="header">
         <div>
-            <h1>Welcome, {{ Auth::user()->name }}</h1>
-            <div class="system-name">Smart Course Registration</div>
+            <h1>Student Dashboard</h1>
+            <div class="system-name">Welcome, {{ Auth::user()->name }}</div>
         </div>
         <div class="dropdown">
             <button class="dropdown-button">Profile</button>
             <div class="dropdown-menu">
-                <a href="{{ route('profile.edit') }}">View Profile</a>
+                <a href="{{ route('student.profile') }}">View Profile</a>
                 <a href="#">Settings</a>
-                <a href="{{ route('logout') }}">Logout</a>
+                <a href="#">Logout</a>
             </div>
         </div>
     </div>
-
+    
     <!-- Navigation Bar -->
     <div class="nav">
         <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
@@ -253,8 +263,8 @@
     <div class="progress-container">
         <h2>Degree Progress</h2>
         <div class="progress-bar">
-            <a href="{{ route('student.degree.progress') }}" style="text-decoration: none;">
-                <span style="display: inline-block; background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px; width: {{ (17 / 127) * 100 }}%;">
+            <a href="{{ route('student.degree_progress') }}" style="text-decoration: none;">
+                <span>
                     {{ 17 }} / 127 Credits
                 </span>
             </a>
@@ -273,9 +283,9 @@
         <div class="section">
             <h2>Need Consultation?</h2>
             <p>Chat with your Academic Staff using Smart Course Registration.</p>
-            <a href="{{ route('student.chat') }}">
+            <a href="{{ route('student.courses.consultation') }}">
                 <button>Start Chat</button>
-            </a>
+            </a>            
         </div>
     </div>
 
@@ -292,7 +302,7 @@
 </div>
 
 @foreach($notifications as $notification)
-    <div class="notification">
+    <div class="notification" style="display: block; opacity: 1;">
         {{ $notification }}
     </div>
 @endforeach
@@ -301,10 +311,12 @@
     document.addEventListener('DOMContentLoaded', function () {
         const notifications = document.querySelectorAll('.notification');
         notifications.forEach(notification => {
-            notification.style.display = 'block';
             setTimeout(() => {
-                notification.style.display = 'none';
-            }, 5000);
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 300);
+            }, 7000);
         });
     });
 </script>
