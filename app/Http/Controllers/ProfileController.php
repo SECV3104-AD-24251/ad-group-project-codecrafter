@@ -8,7 +8,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\View;
 
 class ProfileController extends Controller
 {
@@ -31,6 +30,10 @@ class ProfileController extends Controller
     {
         $user = $request->user();
         $user->fill($request->validated());
+
+        // Ensure program and current_semester are updated
+        $user->program = $request->input('program');
+        $user->current_sem = $request->input('current_sem');
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
