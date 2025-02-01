@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\SectionInfo;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Student;
@@ -13,51 +14,48 @@ class DegreeProgressController extends Controller
     // Show Degree Progress Page
     public function showProgress()
     {
-        // Fetch the authenticated user
-        $user = Auth::user();
+        $user = Auth::user(); // Get the authenticated user
 
-        // Check if the user is authenticated and is a student
-        if (!$user || !$user->isStudent()) {
-            return redirect()->route('login')->withErrors('You must be logged in as a student to access this page.');
-        }
+        // Fetch all courses matching the user's program and semester
+        $allCourses = Course::where('program', $user->program)
+            ->where('semester', $user->current_sem)
+            ->get();
 
-        // Ensure the user has a linked student profile
-        $student = $user->student;
-        if (!$student) {
-            return view('student.degree_progress')->withErrors('Student profile not found.');
-        }
+        // Get registered course IDs from section_info table
+        $registeredCourseIds = SectionInfo::where('user_id', $user->id)->pluck('course_id')->toArray();
 
-        // Fetch the student's degree plan
-        $degreePlan = $student->degreePlan;
-        if (!$degreePlan) {
-            return view('student.degree_progress')->withErrors('Degree plan not found.');
-        }
+        // Filter out registered courses
+        $remainingCourses = $allCourses->reject(function ($course) use ($registeredCourseIds) {
+            return in_array($course->id, $registeredCourseIds);
+        });
 
-        // Get completed courses and calculate the progress
-        $completedCourses = $student->completedCourses()->get();
-        $totalCourses = $degreePlan->totalCourses();
-        $completedCount = $completedCourses->count();
-        $completionRate = $totalCourses > 0 ? ($completedCount / $totalCourses) * 100 : 0;
+        // Separate mandatory and elective courses
+        $mandatoryCourses = $remainingCourses->where('type', 'mandatory');
+        $electiveCourses = $remainingCourses->where('type', 'elective');
 
-        // Fetch suggestions for electives based on degree requirements
-        $suggestedElectives = $this->getSuggestedElectives($student);
+        // Fetch suggested electives
+        $suggestedElectives = $this->getSuggestedElectives($user);
 
-        // Pass data to the view
         return view('student.degree_progress', [
-            'completedCourses' => $completedCourses,
-            'totalCourses' => $totalCourses,
-            'completionRate' => $completionRate,
-            'suggestedElectives' => $suggestedElectives,
-            'degreePlan' => $degreePlan
+            'mandatoryCourses' => $mandatoryCourses,
+            'electiveCourses' => $electiveCourses,
+            'totalCourses' => $allCourses->count(),
+            'completedCourses' => count($registeredCourseIds),
+            'completionRate' => $allCourses->count() > 0 ? (count($registeredCourseIds) / $allCourses->count()) * 100 : 0,
+            'registeredCourseIds' => $registeredCourseIds,
+            'suggestedElectives' => $suggestedElectives, // Add suggested electives
         ]);
     }
 
     // Function to get suggested electives
     private function getSuggestedElectives($student)
     {
-        $completedCourseIds = $student->completedCourses()->pluck('id')->toArray();
+        // Ensure that you're selecting the `id` column from the `courses` table explicitly
+        $completedCourseIds = $student->completedCourses()->pluck('course_id')->toArray();
+
         return Course::where('type', 'elective')
-                     ->whereNotIn('id', $completedCourseIds)
-                     ->get();
+            ->whereNotIn('id', $completedCourseIds)
+            ->get();
     }
+
 }
