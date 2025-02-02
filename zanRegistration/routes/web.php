@@ -14,6 +14,7 @@ use App\Http\Controllers\ProcessRegistrationController;
 use App\Http\Controllers\Student\DegreeProgressController;
 use App\Http\Controllers\StudentCourseRegisteredController;
 use App\Http\Controllers\ConsultationController;
+use App\Http\Controllers\ChatsController;
 
 
 // Welcome Page
@@ -105,3 +106,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/student/courses/consultation', [ConsultationController::class, 'index'])->name('student.courses.consultation');
     Route::post('/student/courses/consultation/store', [ConsultationController::class, 'store'])->name('student.courses.consultation.store');
 });
+
+Route::get('/messages/{consultationId}', [ChatsController::class, 'getMessages']);
+Route::post('/messages', [ChatsController::class, 'sendMessage']);
