@@ -13,7 +13,7 @@ import { Head } from '@inertiajs/vue3';
                 </h1>
 
                 <p class="text-gray-700 dark:text-gray-300 mb-6">
-                    Choose an academic advisor to schedule a consultation regarding course registration.
+                    Choose an academic advisor to have a consultation regarding course registration.
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -34,7 +34,7 @@ import { Head } from '@inertiajs/vue3';
                             @click="scheduleConsultation(advisor.id)"
                             class="mt-4 py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                         >
-                            Schedule Consultation
+                            Chat Now
                         </button>
                     </div>
                 </div>
@@ -48,14 +48,16 @@ export default {
     methods: {
         scheduleConsultation(advisorId) {
             this.$inertia.post('/consultations', { advisor_id: advisorId }, {
-                onSuccess: () => {
-                    alert('Consultation scheduled successfully!');
+                onSuccess: (response) => {
+                    // Redirect student to chat page after scheduling
+                    this.$inertia.visit(`/chat/${response.props.consultation_id}`);
                 },
-                onError: (errors) => {
-                    alert('Failed to schedule consultation.');
+                onError: () => {
+                    alert('Failed to have consultation session.');
                 },
             });
         },
     },
 };
 </script>
+
