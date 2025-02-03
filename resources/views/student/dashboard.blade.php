@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         /* Global Styling */
         body {
@@ -149,19 +151,6 @@
             overflow: hidden;
         }
 
-        .progress-bar span {
-            display: block;
-            height: 100%;
-            background-color: #43a047;
-            width: {{ (17 / 127) * 100 }}%;
-            border-radius: 5px;
-            text-align: center;
-            line-height: 30px;
-            color: white;
-            font-weight: bold;
-            transition: width 0.5s ease;
-        }
-
         /* Section Styling */
         .sections-container {
             display: flex;
@@ -239,13 +228,13 @@
         <div class="dropdown">
             <button class="dropdown-button">Profile</button>
             <div class="dropdown-menu">
-                <a href="{{ route('student.profile') }}">View Profile</a>
+                <a href="{{ route('profile.edit') }}">View Profile</a>
                 <a href="#">Settings</a>
                 <a href="#">Logout</a>
             </div>
         </div>
     </div>
-    
+
     <!-- Navigation Bar -->
     <div class="nav">
         <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
@@ -262,13 +251,22 @@
     <!-- Progress Bar Section -->
     <div class="progress-container">
         <h2>Degree Progress</h2>
-        <div class="progress-bar">
-            <a href="{{ route('student.degree_progress') }}" style="text-decoration: none;">
-                <span>
-                    {{ 17 }} / 127 Credits
-                </span>
+        @if ($maxCredits > 0)
+            <a href="{{ route('student.degree.progress') }}" style="text-decoration: none;">
+                <div class="progress mb-3" style="height: 30px;">
+                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        style="width: {{ $completionRate }}%;"
+                        aria-valuenow="{{ $completionRate }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                        {{ $currentCredits }} / {{ $maxCredits }} Credits
+                    </div>
+                </div>
             </a>
-        </div>
+        @else
+            <p class="text-muted">No courses found in your degree plan.</p>
+        @endif
     </div>
 
     <!-- Course Management and Consultation Sections -->
@@ -285,7 +283,7 @@
             <p>Chat with your Academic Staff using Smart Course Registration.</p>
             <a href="{{ route('student.courses.consultation') }}">
                 <button>Start Chat</button>
-            </a>            
+            </a>
         </div>
     </div>
 
