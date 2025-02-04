@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>Course Registered</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
         /* Global Styling */
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f4f7fc;
+            background-color: #f9fafb;
             margin: 0;
             padding: 0;
             color: #333;
@@ -31,17 +29,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(45deg, #800000, #9c1c4d);
+            background-color: maroon;
             color: white;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .header h1 {
             margin: 0;
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 700;
         }
 
@@ -65,11 +63,6 @@
             border-radius: 5px;
             cursor: pointer;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s;
-        }
-
-        .dropdown-button:hover {
-            background-color: #f1f1f1;
         }
 
         .dropdown-menu {
@@ -94,7 +87,6 @@
             display: block;
             text-decoration: none;
             font-size: 14px;
-            transition: background-color 0.3s;
         }
 
         .dropdown-menu a:hover {
@@ -106,7 +98,7 @@
             display: flex;
             justify-content: space-around;
             background-color: white;
-            padding: 15px;
+            padding: 10px;
             border-radius: 10px;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
@@ -121,10 +113,15 @@
             align-items: center;
             padding: 10px 20px;
             border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s;
         }
 
-        .nav a:hover, .nav a.active {
+        .nav a:hover {
+            background-color: maroon;
+            color: white;
+        }
+
+        .nav a.active {
             background-color: maroon;
             color: white;
         }
@@ -133,88 +130,108 @@
             margin-right: 10px;
         }
 
-        /* Progress Bar Styling */
-        .progress-container {
-            margin-bottom: 20px;
-            background-color: #fff;
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
-
-        .progress-bar {
+        table {
             width: 100%;
-            background-color: #e9ecef;
-            border-radius: 5px;
-            height: 30px;
-            position: relative;
-            overflow: hidden;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
 
-        /* Section Styling */
-        .sections-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
         }
 
-        .section {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            flex: 1;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .section h2 {
-            margin-top: 0;
-            font-size: 22px;
-            color: maroon;
-        }
-
-        .section p {
-            color: #6c757d;
-            margin: 10px 0;
-        }
-
-        .section button {
+        th {
             background-color: maroon;
             color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
         }
 
-        .section button:hover {
-            background-color: #9d1c4d;
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
         }
 
-        /* Notification Styling */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #e3f2fd;
-            color: #2196f3;
-            padding: 15px 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        a {
+            text-decoration: none;
+            color: maroon;
+            font-weight: bold;
         }
-    </style>
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            text-align: center;
+            padding: 10px;
+            color: green;
+            font-size: 16px;
+        }
+
+        .back-button {
+            display: inline-block;
+            background-color: maroon;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-button:hover {
+            background-color: maroon;
+        }
+
+        /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .close-button {
+        float: right;
+        font-size: 20px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+        color: #000;
+        text-decoration: none;
+    }
+
+        </style>
 </head>
 <body>
 
@@ -222,8 +239,8 @@
     <!-- Header -->
     <div class="header">
         <div>
-            <h1>Student Dashboard</h1>
-            <div class="system-name">Welcome, {{ Auth::user()->name }}</div>
+            <h1>Welcome, {{ Auth::user()->name }}</h1>
+            <div class="system-name">Smart Course Registration</div>
         </div>
         <div class="dropdown">
             <button class="dropdown-button">Profile</button>
@@ -248,76 +265,74 @@
         </a>
     </div>
 
-    <!-- Progress Bar Section -->
-    <div class="progress-container">
-        <h2>Degree Progress</h2>
-        @if ($maxCredits > 0)
-            <a href="{{ route('student.degree.progress') }}" style="text-decoration: none;">
-                <div class="progress mb-3" style="height: 30px;">
-                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
-                        role="progressbar"
-                        style="width: {{ $completionRate }}%;"
-                        aria-valuenow="{{ $completionRate }}"
-                        aria-valuemin="0"
-                        aria-valuemax="100">
-                        {{ $currentCredits }} / {{ $maxCredits }} Credits
-                    </div>
-                </div>
-            </a>
-        @else
-            <p class="text-muted">No courses found in your degree plan.</p>
+    <div class="container">
+        @if (session('success'))
+            <p class="message">{{ session('success') }}</p>
+        @elseif (session('error'))
+            <p class="message" style="color: red;">{{ session('error') }}</p>
         @endif
-    </div>
 
-    <!-- Course Management and Consultation Sections -->
-    <div class="sections-container">
-        <div class="section">
-            <h2>Course Management</h2>
-            <p>Manage your course registration through Smart Course Registration.</p>
-            <a href="{{ route('student.courses.register') }}">
-                <button>Register Now!</button>
-            </a>
-        </div>
-        <div class="section">
-            <h2>Need Consultation?</h2>
-            <p>Chat with your Academic Staff using Smart Course Registration.</p>
-            <a href="{{ route('student.courses.consultation') }}">
-                <button>Start Chat</button>
-            </a>
+        @if ($registeredSections->isEmpty())
+    <div id="popupModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h3>Registration Required</h3>
+            <p>You have not registered for any courses yet. Please register for courses.</p>
+            <a href="{{ route('student.courses.register') }}" class="back-button">Go to Course Registration</a>
         </div>
     </div>
 
-    <!-- Registered Credit Hours Section -->
-   <div class="progress-container">
-       <h2>Registered Credit Hours</h2>
-       <div style="text-align: center; padding: 10px 0; font-size: 18px; font-weight: bold; color: maroon;">
-        <a href="{{ route('student.credit.hours') }}" style="color: maroon; text-decoration: none;">
-            {{ $currentCredits }} Credit Hours Registered
-        </a>
-       </div>
+    <script>
+        // Show the modal when the page loads
+        window.onload = function () {
+            document.getElementById('popupModal').style.display = 'block';
+        };
+
+        // Close the modal
+        function closeModal() {
+            document.getElementById('popupModal').style.display = 'none';
+        }
+    </script>
+@endif
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course Code</th>
+                        <th>Course Name</th>
+                        <th>Section</th>
+                        <th>Lecturer</th>
+                        <th>Capacity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($registeredSections as $section)
+                        <tr>
+                            <td>{{ $section->course->subject_code }}</td>
+                            <td>{{ $section->course->subject_name }}</td>
+                            <td>{{ $section->section }}</td>
+                            <td>{{ $section->lect_assigned }}</td>
+                            <td>{{ $section->capacity }}</td>
+                            <td>
+                                <!-- Unenroll Form -->
+                                <form method="POST" action="{{ route('student.unenroll') }}">
+                                    @csrf
+                                    <input type="hidden" name="section_id" value="{{ $section->id }}">
+                                    <input type="hidden" name="course_id" value="{{ $section->course_id }}">
+                                    <button type="submit">Unenroll Me</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+
+        <br>
+        <!-- Back Button -->
+        <a href="{{ route('student.courses.register') }}" class="back-button" style="margin-top: 10px;">Go Back to Course Registration</a>
     </div>
-
-</div>
-
-@foreach($notifications as $notification)
-    <div class="notification" style="display: block; opacity: 1;">
-        {{ $notification }}
-    </div>
-@endforeach
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const notifications = document.querySelectorAll('.notification');
-        notifications.forEach(notification => {
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, 300);
-            }, 7000);
-        });
-    });
-</script>
-
 </body>
+
 </html>
