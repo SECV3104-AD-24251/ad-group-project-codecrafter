@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
     <style>
-    
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f7fc;
@@ -50,11 +50,47 @@
         }
 
         .course-item {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .course-item label {
             margin-top: 10px;
+        }
+
+        .course-list {
+        background-color: #ffffff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-item a {
+            display: block;
+            padding: 10px;
+            background: #e1e5ec;
+            text-decoration: none;
+            color: #333;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .course-item a:hover {
+            background: maroon;
+            color: white;
+        }
+
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            right: 5%;  /* Slightly less than 0 to keep most of the card to the right */
+            width: 20%;
+            max-width: 1200px;
+        }
+
+        .card-header {
+            font-weight: bold;
+            text-align: center;
         }
 
         .filter-section {
@@ -198,8 +234,9 @@
                     @if ($shouldShow)
                         <div class="course-item">
                             <a href="{{ route('processRegistration.show', $subject->id) }}">
-                                <strong>{{ $subject->course_code }}</strong> - {{ $subject->course_name }} 
-                                (Credit: {{ $subject->credits }})
+
+                                <strong>{{ $subject->subject_code }}</strong> - {{ $subject->subject_name }}
+                                (Credit: {{ $subject->credit_hours }})
                             </a>
                             <div>
                                 <input type="checkbox" class="high-priority-checkbox" data-course-id="{{ $subject->id }}">
@@ -209,6 +246,35 @@
                     @endif
                 @endforeach
             @endif
+        </div>
+
+        <!-- Right Column: Suggested Courses -->
+        <div class="col-md-4">
+            <div class="card" style="top: 120px;">
+                <div class="card-header" style="background-color: maroon; color: white;">
+                    <h5>Suggested Courses</h5>
+                </div>
+                <div class="card-body">
+                    @if ($suggestSubjects->isEmpty())
+                        <p>No suggested courses available.</p>
+                    @else
+                        <ul class="list-group">
+                            @foreach ($suggestSubjects as $suggested)
+                                <li class="list-group-item">
+                                    <strong>{{ $suggested->subject_code }}</strong> - {{ $suggested->subject_name }}
+                                    (Credit: {{ $suggested->credit_hours }})
+
+                                    <!-- Use GET instead of POST -->
+                                    <a href="{{ route('processRegistration.show', ['course_id' => $suggested->id]) }}"
+                                       class="btn btn-sm btn-success mt-2">
+                                        View Sections
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </body>
