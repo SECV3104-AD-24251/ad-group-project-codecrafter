@@ -232,13 +232,13 @@
         <div class="dropdown">
             <button class="dropdown-button">Profile</button>
             <div class="dropdown-menu">
-                <a href="#">View Profile</a>
+                <a href="{{ route('profile.edit') }}">View Profile</a>
                 <a href="#">Settings</a>
                 <a href="#">Logout</a>
             </div>
         </div>
     </div>
-    
+
     <!-- Navigation Bar -->
     <div class="nav">
         <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
@@ -275,8 +275,8 @@
         <tbody>
             @forelse ($waitlists as $waitlist)
                 <tr>
-                    <td>{{ $waitlist->course->course_name }}</td>
-                    <td>{{ $waitlist->course->section }}</td>
+                    <td>{{ $waitlist->courseSection->course->subject_name }}</td>
+                    <td>{{ $waitlist->course->no_section }}</td>
                     <td>{{ $waitlist->position }}</td>
                     <td>
                         <span class="badge badge-{{ $waitlist->status == 'active' ? 'primary' : 'success' }}">
@@ -310,7 +310,7 @@
                 <select name="course_id" id="course" required>
                     <option value="" disabled selected>Select a course</option>
                     @foreach($courses as $course)
-                        <option value="{{ $course->id }}">{{ $course->course_name}} ({{$course->section}})</option>
+                        <option value="{{ $course->id }}">{{ $course->subject_name}} ({{$course->no_section}})</option>
                     @endforeach
                 </select>
                 <button type="submit">Submit Waitlist Request</button>
