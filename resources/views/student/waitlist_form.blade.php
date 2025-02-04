@@ -8,12 +8,12 @@
 <body>
     <h1>Student Waitlist Form</h1>
 
-    <form action="{{ route('student.waitlist.submit') }}" method="POST">
+    <form action="{{ route('student.waitlist.form') }}" method="POST">
         @csrf
         <label for="course_id">Course:</label>
         <select name="course_id" id="course_id" required>
             @foreach($courses as $course)
-                <option value="{{ $course->id }}">{{ $course->name }}</option>
+                <option value="{{ $course->id }}">{{ $course->subject_name }}</option>
             @endforeach
         </select>
         <button type="submit">Submit</button>
