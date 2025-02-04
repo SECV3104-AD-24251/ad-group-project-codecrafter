@@ -125,12 +125,12 @@
             <ul class="list-group">
                 @foreach ($mandatoryCourses as $course)
                     <li class="list-group-item">
-                        <span><i class="bi bi-check-circle-fill text-success"></i> {{ $course->course_name }} (Mandatory)</span>
+                        <span><i class="bi bi-check-circle-fill text-success"></i> {{ $course->subject_name }} (Mandatory)</span>
                     </li>
                 @endforeach
                 @foreach ($electiveCourses as $course)
                     <li class="list-group-item">
-                        <span><i class="bi bi-check-circle-fill text-warning"></i> {{ $course->course_name }} (Elective)</span>
+                        <span><i class="bi bi-check-circle-fill text-warning"></i> {{ $course->subject_name }} (Elective)</span>
                     </li>
                 @endforeach
             </ul>
@@ -145,7 +145,7 @@
                 @foreach ($mandatoryCourses as $course)
                     @if (!in_array($course->id, $registeredCourseIds))
                         <li class="list-group-item">
-                            <span><i class="bi bi-x-circle-fill text-danger"></i> {{ $course->course_name }} ({{ $course->course_code }})</span>
+                            <span><i class="bi bi-x-circle-fill text-danger"></i> {{ $course->subject_name }} ({{ $course->subject_code }})</span>
                         </li>
                     @endif
                 @endforeach
@@ -160,7 +160,7 @@
             <ul class="list-group">
                 @foreach ($suggestedElectives as $elective)
                     <li class="list-group-item">
-                        <span><i class="bi bi-lightbulb"></i> {{ $elective->course_name }} ({{ $elective->course_code }})</span>
+                        <span><i class="bi bi-lightbulb"></i> {{ $elective->subject_name }} ({{ $elective->subject_code }})</span>
                     </li>
                 @endforeach
             </ul>
