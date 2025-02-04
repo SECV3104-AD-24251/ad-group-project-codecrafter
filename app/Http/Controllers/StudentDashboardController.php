@@ -88,8 +88,6 @@ class StudentDashboardController extends Controller
 
         return $notifications;
     }
-
-
 }
 
 
