@@ -23,7 +23,7 @@ class CourseAvailableNotification extends Notification
     {
         return (new FcmMessage())
             ->title('New Course Available!')
-            ->body("The course {$this->course->name} is now available!")
-            ->data(['course_id' => $this->course->id]);
+            ->body("The course {$this->course->subject_name} is now available!")
+            ->data(['course_id' => $this->course->subject_id]);
     }
 }
