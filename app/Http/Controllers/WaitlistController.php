@@ -139,7 +139,7 @@ class WaitlistController extends Controller
     // Notify the student
     $student = $waitlist->student; // Assuming the waitlist is related to the student
     $notificationData = [
-        'course_name' => $waitlist->course->name,
+        'course_name' => $waitlist->course->subject_name,
         'status' => $validated['status'],
     ];
 
