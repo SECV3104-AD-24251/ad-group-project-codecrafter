@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waitlist Management</title>
+    <title>Course Registered</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
@@ -245,13 +245,13 @@
         <div class="dropdown">
             <button class="dropdown-button">Profile</button>
             <div class="dropdown-menu">
-                <a href="#">View Profile</a>
+                <a href="{{ route('profile.edit') }}">View Profile</a>
                 <a href="#">Settings</a>
                 <a href="#">Logout</a>
             </div>
         </div>
     </div>
-    
+
     <!-- Navigation Bar -->
     <div class="nav">
         <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
@@ -294,7 +294,7 @@
         }
     </script>
 @endif
-    
+
             <table>
                 <thead>
                     <tr>
@@ -309,14 +309,14 @@
                 <tbody>
                     @foreach ($registeredSections as $section)
                         <tr>
-                            <td>{{ $section->course->course_code }}</td>
-                            <td>{{ $section->course->course_name }}</td>
+                            <td>{{ $section->course->subject_code }}</td>
+                            <td>{{ $section->course->subject_name }}</td>
                             <td>{{ $section->section }}</td>
                             <td>{{ $section->lect_assigned }}</td>
                             <td>{{ $section->capacity }}</td>
                             <td>
                                 <!-- Unenroll Form -->
-                                <form method="POST" action="{{ route('processRegistration.enroll') }}">
+                                <form method="POST" action="{{ route('student.unenroll') }}">
                                     @csrf
                                     <input type="hidden" name="section_id" value="{{ $section->id }}">
                                     <input type="hidden" name="course_id" value="{{ $section->course_id }}">
@@ -327,7 +327,7 @@
                     @endforeach
                 </tbody>
             </table>
-        
+
 
         <br>
         <!-- Back Button -->
